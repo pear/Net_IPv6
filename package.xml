@@ -20,12 +20,15 @@
       <role>lead</role>
     </maintainer>
   </maintainers>
+
   <release>
-    <version>1.0</version>
+    <version>1.0.2</version>
     <state>stable</state>
-    <date>2004-03-02</date>
+    <date>2005-02-13</date>
     <notes>
-     First official release
+     Bug #3404: checkIPv6() is case sensitive
+     Bug #3405: compress() does not compress '0000'
+     Thanks to elfrink at introweb dot nl
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -33,4 +36,29 @@
       </dir>
     </filelist>
   </release>
+
+  <changelog>
+  <release>
+    <version>1.0.1</version>
+    <state>stable</state>
+    <date>2004-11-24</date>
+    <notes>
+     rewrite compress()/uncompress
+     fixes this bugs:
+     Bug #2803  	compress() adds colon
+     Bug #2802  	compress() doesn't compress correctly
+     Thanks to cmoehrke at netviser dot de
+    </notes>
+  </release>
+  <release>
+    <version>1.0</version>
+    <state>stable</state>
+    <date>2004-03-02</date>
+    <notes>
+     First official release
+    </notes>
+  </release>
+  </changelog>
 </package>
+
+
