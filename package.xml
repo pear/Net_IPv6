@@ -2,10 +2,10 @@
 <!-- do not use the "Type" attribute here, that one is only for
      generated package.xml files -->
 <package>
-  <name>IPv6</name>
+  <name>Net_IPv6</name>
   <summary>Class to validate and to work with IPv6</summary> 
   <maintainer>
-    <initials></initials>
+    <user>alexmerz</user>
     <name>Alexander Merz</name>
     <email>alexander.merz@t-online.de</email>
   </maintainer>
