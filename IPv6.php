@@ -31,16 +31,16 @@
 class Net_IPv6 {
 
     // {{{ Uncompress()
-    	
+
     /**
      * Uncompresses an IPv6 adress
-     * 
+     *
      * RFC 2373 allows you to compress zeros in an adress to '::'. This
      * function expects an valid IPv6 adress and expands the '::' to
      * the required zeros.
-     * 
+     *
      * Example:  FF01::101	->  FF01:0:0:0:0:0:0:101
-     *           ::1        ->  0:0:0:0:0:0:0:1 
+     *           ::1        ->  0:0:0:0:0:0:0:1
      *
      * @access public
      * @see Compress()
@@ -49,84 +49,102 @@ class Net_IPv6 {
      * @return string	the uncompressed IPv6-adress (hex format)
 	 */
     function Uncompress($ip) {
-        if (strstr($ip, '::') ) {
-            $ipComp = str_replace('::', ':', $ip);
-            if (':' == $ipComp{0}) {
-                $ipComp = substr($ipComp, 1);
+        $uip = $ip;
+        $c1 = -1;
+        $c2 = -1;
+        if (false !== strpos($ip, '::') ) {
+            list($ip1, $ip2) = explode('::', $ip);
+            if(""==$ip1) {
+                $c1 = -1;
+            } else {
+               	$pos = 0;
+                if(0 < ($pos = substr_count($ip1, ':'))) {
+                    $c1 = $pos;
+                } else {
+                    $c1 = 0;
+                }
             }
-
-            $ipParts = count(explode(':', $ipComp));
-            if (strstr($ip, '.')) {
-                $ipParts++;
+            if(""==$ip2) {
+                $c2 = -1;
+            } else {
+                $pos = 0;
+                if(0 < ($pos = substr_count($ip2, ':'))) {
+                    $c2 = $pos;
+                } else {
+                    $c2 = 0;
+                }
             }
-
-            $ipMiss = "" ;
-            for ($i = 0; (8-$ipParts) > $i; $i++) {
-                $ipMiss = $ipMiss.'0:';
+            if(-1 == $c1 && -1 == $c2) { // ::
+                $uip = "0:0:0:0:0:0:0:0";
+            } else if(-1==$c1) {              // ::xxx
+                $fill = str_repeat('0:', 7-$c2);
+                $uip =  str_replace('::', $fill, $uip);
+            } else if(-1==$c2) {              // xxx::
+                $fill = str_repeat(':0', 7-$c1);
+                $uip =  str_replace('::', $fill, $uip);
+            } else {                          // xxx::xxx
+                $fill = str_repeat(':0:', 6-$c2-$c1);
+                $uip =  str_replace('::', $fill, $uip);
+                $uip =  str_replace('::', ':', $uip);
             }
-            if (0 != strpos($ip, '::') ) {
-                $ipMiss = ':'.$ipMiss;
-            }
-
-            $ip = str_replace('::', $ipMiss, $ip);
         }
-
-        return $ip;		
+        return $uip;
     }
-    
+
     // }}}
     // {{{ Compress()
 
     /**
      * Compresses an IPv6 adress
-     * 
+     *
      * RFC 2373 allows you to compress zeros in an adress to '::'. This
      * function expects an valid IPv6 adress and compresses successive zeros
      * to '::'
-     * 
+     *
      * Example:  FF01:0:0:0:0:0:0:101 	-> FF01::101
-     *           0:0:0:0:0:0:0:1        -> ::1 
+     *           0:0:0:0:0:0:0:1        -> ::1
      *
      * @access public
      * @see Uncompress()
-     * @static	
+     * @static
      * @param string $ip	a valid IPv6-adress (hex format)
-     * @return string	the compressed IPv6-adress (hex format)	
+     * @return string	the compressed IPv6-adress (hex format)
      */
     function Compress($ip)	{
-
+        $cip = $ip;
         if (!strstr($ip, "::")) {
-            $ipPart = explode(":", $ip);
-            $ipComp = "";
-            $flag   = true;
-            for ($i = 0; $i < count($ipPart); $i ++) {
-                if (!$ipPart[$i] and !$ipPart[$i+1]) {
-                    break;
-                } else {
-                    $ipComp = $ipComp.$ipPart[$i].":";
+            $ipp = explode(':',$ip);
+
+            for($i=0; $i<count($ipp); $i++) {
+                $ipp[$i] = $ipp[$i];
+                if(hexdec($ipp[$i])>0) {
+                    $ipp[$i]=$ipp[$i].'_';
                 }
             }
-            $ipComp = substr($ipComp, 0, -1);			
-            for (; $i < count($ipPart); $i++) {
-                if($flag) {
-                    $flag   = !$flag;
-                    $ipComp = $ipComp."::";
+            $cip = join(':',$ipp);
+            $stop = false;
+            $pattern = "0:0";
+            $pos=-1;
+
+            while(!$stop) {
+               	$pos = strpos($cip, $pattern);
+                if($pos === false) {
+                    $stop = true;
+                    $pos = -1;
+                } else {
+                    $pattern = $pattern.":0";
                 }
-                if(0 != $ipPart[$i]) {
-                    break;
-                }
+            }
+            $cip = preg_replace("/".substr($pattern,0,-2)."/", ':', $cip,1);
+            if(1!=strlen($cip)) {
+                $cip = str_replace(':::', '::', $cip);
+                $cip = str_replace('_', '', $cip);
+            } else {
+                $cip = "::";
             }
 
-            for (; $i < count($ipPart); $i++) {
-                $ipComp = $ipComp.$ipPart[$i].":";
-            }
         }
-        if ('::' == substr($ipCom, strlen($ipcom)-2 )) {
-            $ip = substr($ipComp, 0, -1);
-        } else {
-            $ip = $ipComp ;
-        }
-        return $ip;
+        return $cip;
 
     }
 
@@ -179,7 +197,7 @@ class Net_IPv6 {
         if (!empty($ipPart[0])) {
             $ipv6 = explode(':', $ipPart[0]);
             for ($i = 0; $i < count($ipv6); $i++) {
-                $dec = hexdec($ipv6[$i]); 
+                $dec = hexdec($ipv6[$i]);
                 if ($ipv6[$i] >= 0 && $dec <= 65535 && $ipv6[$i] == strtoupper(dechex($dec))) {
                     $count++;
                 }
@@ -204,7 +222,7 @@ class Net_IPv6 {
         } else {
             return false;
         }
-    }    
-    // }}}	
+    }
+    // }}}
 }
 ?>
