@@ -22,13 +22,12 @@
   </maintainers>
 
   <release>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <state>stable</state>
-    <date>2005-02-13</date>
+    <date>2005-03-19</date>
     <notes>
-     Bug #3404: checkIPv6() is case sensitive
-     Bug #3405: compress() does not compress '0000'
-     Thanks to elfrink at introweb dot nl
+     Bug #3851: IPv4-mapped/compatible IPv6 uncompress bug
+     Thanks to dtaylor at jasi dot com
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -38,6 +37,16 @@
   </release>
 
   <changelog>
+  <release>
+    <version>1.0.2</version>
+    <state>stable</state>
+    <date>2005-02-13</date>
+    <notes>
+     Bug #3404: checkIPv6() is case sensitive
+     Bug #3405: compress() does not compress '0000'
+     Thanks to elfrink at introweb dot nl
+    </notes>
+  </release>
   <release>
     <version>1.0.1</version>
     <state>stable</state>
