@@ -21,6 +21,8 @@
 /**
 * Class to validate and to work with IPv6
 *
+* Todo: some optimizations for checkIPv6()
+*
 * @author  Alexander Merz <alexander.merz@t-online.de>
 * @package Net_IPv6
 * @version $Id$
@@ -43,33 +45,33 @@ class Net_IPv6 {
      * @access public
      * @see Compress()
      * @static
-     * @param string $ip	a valid IPv6-adress
-     * @return string	the uncompressed IPv6-adress	
+     * @param string $ip	a valid IPv6-adress (hex format)
+     * @return string	the uncompressed IPv6-adress (hex format)
 	 */
-    function Uncompress( $ip) {
-        if( strstr($ip, '::') ) {
-            $ipComp = str_replace( '::', ':', $ip) ;
-            if( ':' == $ipComp{0} ) {
-                $ipComp = substr( $ipComp, 1) ;
+    function Uncompress($ip) {
+        if (strstr($ip, '::') ) {
+            $ipComp = str_replace('::', ':', $ip);
+            if (':' == $ipComp{0}) {
+                $ipComp = substr($ipComp, 1);
             }
 
-            $ipParts = count( explode( ':', $ipComp)) ;
-            if( strstr( $ip, '.') ) {
-                $ipParts++ ;
+            $ipParts = count(explode(':', $ipComp));
+            if (strstr($ip, '.')) {
+                $ipParts++;
             }
 
             $ipMiss = "" ;
-            for( $i = 0; (8 - $ipParts) > $i; $i++) {
-                $ipMiss = $ipMiss.'0:' ;
+            for ($i = 0; (8-$ipParts) > $i; $i++) {
+                $ipMiss = $ipMiss.'0:';
             }
-            if( 0 != strpos( $ip, '::') ) {
-                $ipMiss = ':'.$ipMiss ;
+            if (0 != strpos($ip, '::') ) {
+                $ipMiss = ':'.$ipMiss;
             }
 
-            $ip = str_replace( '::', $ipMiss, $ip) ;
+            $ip = str_replace('::', $ipMiss, $ip);
         }
 
-        return $ip ;		
+        return $ip;		
     }
     
     // }}}
@@ -88,43 +90,43 @@ class Net_IPv6 {
      * @access public
      * @see Uncompress()
      * @static	
-     * @param string $ip	a valid IPv6-adress
-     * @return string	the compressed IPv6-adress	
+     * @param string $ip	a valid IPv6-adress (hex format)
+     * @return string	the compressed IPv6-adress (hex format)	
      */
-    function Compress( $ip)	{
+    function Compress($ip)	{
 
-        if( !strstr( $ip, "::")) {
-            $ipPart = explode( ":", $ip) ;
-            $ipComp = "" ;
-            $flag = true ;
-            for( $i = 0; $i < count( $ipPart); $i++) {
-                if( !$ipPart[$i] and !$ipPart[$i+1]) {
-                    break ;
+        if (!strstr($ip, "::")) {
+            $ipPart = explode(":", $ip);
+            $ipComp = "";
+            $flag   = true;
+            for ($i = 0; $i < count($ipPart); $i++) {
+                if (!$ipPart[$i] and !$ipPart[$i+1]) {
+                    break;
                 } else {
-                    $ipComp = $ipComp.$ipPart[$i].":" ;
+                    $ipComp = $ipComp.$ipPart[$i].":";
                 }
             }
-            $ipComp = substr( $ipComp, 0, -1) ;			
-            for( ; $i < count( $ipPart); $i++) {
-                if( $flag ) {
-                    $flag = !$flag ;
-                    $ipComp = $ipComp."::" ;
+            $ipComp = substr($ipComp, 0, -1);			
+            for (; $i < count($ipPart); $i++) {
+                if($flag) {
+                    $flag   = !$flag;
+                    $ipComp = $ipComp."::";
                 }
-                if( 0 != $ipPart[$i] ) {
-                    break ;
+                if(0 != $ipPart[$i]) {
+                    break;
                 }
             }
 
-            for( ; $i < count( $ipPart); $i++) {
-                $ipComp = $ipComp.$ipPart[$i].":" ;
+            for (; $i < count($ipPart); $i++) {
+                $ipComp = $ipComp.$ipPart[$i].":";
             }
         }
-        if( '::' == substr( $ipCom, strlen( $ipcom)-2 ) ) {
-            $ip = substr( $ipComp, 0, -1) ;
+        if ('::' == substr($ipCom, strlen($ipcom)-2 )) {
+            $ip = substr($ipComp, 0, -1);
         } else {
             $ip = $ipComp ;			
         }
-        return $ip ;
+        return $ip;
 		
     }
     
@@ -142,19 +144,18 @@ class Net_IPv6 {
      *
      * @access public
      * @static	
-     * @param string $ip	a valid IPv6-adress
-     * @return array		[0] contains the IPv6 part, [1] the IPv4 part
+     * @param string $ip	a valid IPv6-adress (hex format)
+     * @return array		[0] contains the IPv6 part, [1] the IPv4 part (hex format)
      */
-    function SplitV64( $ip) {
-        $ip = Net_IPv6::Uncompress( $ip) ;			
-        if( strstr( $ip, '.')) {
-
-            $pos = strrpos( $ip, ':') ;
-            $ip{ $pos} = '_' ;
-            $ipPart = explode( '_', $ip) ;
-            return $ipPart ;
+    function SplitV64($ip) {
+        $ip = Net_IPv6::Uncompress($ip);			
+        if (strstr($ip, '.')) {
+            $pos = strrpos($ip, ':');
+            $ip{$pos} = '_';
+            $ipPart = explode('_', $ip);
+            return $ipPart;
         } else {
-            return array( $ip, "") ;
+            return array($ip, "");
         }
     }
     
@@ -171,43 +172,39 @@ class Net_IPv6 {
      * @param string $ip	a valid IPv6-adress
      * @return boolean	true if $ip is an IPv6 adress
      */
-    function checkIPv6( $ip) {
+    function checkIPv6($ip) {
 
-        $ipPart = Net_IPv6::SplitV64( $ip) ;
-        $count = 0 ;
-        if( !empty( $ipPart[0]) ) {
-            $ipv6 = explode( ':', $ipPart[0]) ;
-
-            for ($i = 0; $i < count( $ipv6); $i++) {
+        $ipPart = Net_IPv6::SplitV64($ip);
+        $count = 0;
+        if (!empty($ipPart[0])) {
+            $ipv6 = explode(':', $ipPart[0]);
+            for ($i = 0; $i < count($ipv6); $i++) {
                 $dec = hexdec($ipv6[$i]); 
                 if ($ipv6[$i] >= 0 && $dec <= 65535 && $ipv6[$i] == strtoupper(dechex($dec))) {
                     $count++;
                 }
             }
-            if( 8 == $count ) {
-                return true ;
-            } elseif(  6 == $count and !empty( $ipPart[1])) {
-                $ipv4 = explode( '.',$ipPart[1]) ;
-                $count = 0 ;
-                for ($i = 0; $i < count( $ipv4); $i++) {
+            if (8 == $count) {
+                return true;
+            } elseif (6 == $count and !empty($ipPart[1])) {
+                $ipv4 = explode('.',$ipPart[1]);
+                $count = 0;
+                for ($i = 0; $i < count($ipv4); $i++) {
                     if ($ipv4[$i] >= 0 && (integer)$ipv4[$i] <= 255 && preg_match("/^\d{1,3}$/", $ipv4[$i])) {
                         $count++;
                     }
                 }
-                if( 4 == $count) {
-                    return true ;
+                if (4 == $count) {
+                    return true;
                 }
             } else {
-                return false ;
+                return false;
             }
 
         } else {
-            return false ;
+            return false;
         }
-		
-    }
-    
-    // }}}
-	
+    }    
+    // }}}	
 }
 ?>
