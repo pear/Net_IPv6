@@ -19,8 +19,8 @@
 
     </notes>
     <filelist>
-      <dir name="." baseinstalldir="Net">
-	<file>IPv6.php</file>
+      <dir name="/" baseinstalldir="Net">
+        <file role="php">IPv6.php</file>
       </dir>
     </filelist>
   </release>
