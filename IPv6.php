@@ -114,9 +114,8 @@ class Net_IPv6 {
         $cip = $ip;
         if (!strstr($ip, "::")) {
             $ipp = explode(':',$ip);
-
             for($i=0; $i<count($ipp); $i++) {
-                $ipp[$i] = $ipp[$i];
+                $ipp[$i] = dechex(hexdec($ipp[$i]));
                 if(hexdec($ipp[$i])>0) {
                     $ipp[$i]=$ipp[$i].'_';
                 }
@@ -195,10 +194,11 @@ class Net_IPv6 {
         $ipPart = Net_IPv6::SplitV64($ip);
         $count = 0;
         if (!empty($ipPart[0])) {
-            $ipv6 = explode(':', $ipPart[0]);
+            $ipv6 =explode(':', $ipPart[0]);
             for ($i = 0; $i < count($ipv6); $i++) {
                 $dec = hexdec($ipv6[$i]);
-                if ($ipv6[$i] >= 0 && $dec <= 65535 && $ipv6[$i] == strtoupper(dechex($dec))) {
+                $hex = strtoupper(preg_replace("/^[0]{1,3}(.*[0-9a-fA-F])$/", "\\1", $ipv6[$i]));
+                if ($ipv6[$i] >= 0 && $dec <= 65535 && $hex == strtoupper(dechex($dec))) {
                     $count++;
                 }
             }
