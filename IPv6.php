@@ -37,14 +37,14 @@ class Net_IPv6 {
      * function expects an valid IPv6 adress and expands the '::' to 
      * the required zeros.
      * 
-     * Example:  FF01::101	->	FF01:0:0:0:0:0:0:101
-     *			::1			->	0:0:0:0:0:0:0:1 
+     * Example:  FF01::101	->  FF01:0:0:0:0:0:0:101
+     *           ::1        ->  0:0:0:0:0:0:0:1 
      *
      * @access public
      * @see Compress()
      * @static
-	 * @param string $ip	a valid IPv6-adress
-	 * @return string	the uncompressed IPv6-adress	
+     * @param string $ip	a valid IPv6-adress
+     * @return string	the uncompressed IPv6-adress	
 	 */
     function Uncompress( $ip) {
         if( strstr($ip, '::') ) {
@@ -83,7 +83,7 @@ class Net_IPv6 {
      * to '::'
      * 
      * Example:  FF01:0:0:0:0:0:0:101 	-> FF01::101
-     *			0:0:0:0:0:0:0:1         -> ::1 
+     *           0:0:0:0:0:0:0:1        -> ::1 
      *
      * @access public
      * @see Uncompress()
@@ -138,7 +138,7 @@ class Net_IPv6 {
      * an IPv4 compatible adress
      * 
      * Example:  0:0:0:0:0:0:13.1.68.3
-     *			0:0:0:0:0:FFFF:129.144.52.38
+     *           0:0:0:0:0:FFFF:129.144.52.38
      *
      * @access public
      * @static	
