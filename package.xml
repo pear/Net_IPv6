@@ -4,19 +4,28 @@
      generated package.xml files -->
 <package version="1.0">
   <name>Net_IPv6</name>
-  <summary>Class to validate and to work with IPv6</summary> 
+  <summary>Check and validate IPv6 addresses</summary>
+  <description>
+   The class allows you to:
+   * check if an addresse is an IPv6 addresse
+   * compress/uncompress IPv6 addresses
+   * check for an IPv4 compatible ending in an IPv6 adresse
+  </description>
+  <license>PHP License</license>
   <maintainers>
     <maintainer>
       <user>alexmerz</user>
       <name>Alexander Merz</name>
-      <email>alexander.merz@t-online.de</email>
+      <email>alexander.merz@web.de</email>
+      <role>lead</role>
     </maintainer>
   </maintainers>
   <release>
     <version>1.0</version>
-    <date>2001-07-20</date>
+    <state>stable</state>
+    <date>2004-03-02</date>
     <notes>
-
+     First official release
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">

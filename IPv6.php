@@ -13,7 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
-// | Authors: Alexander Merz <alexander.merz@t-online.de>				  |
+// | Authors: Alexander Merz <alexander.merz@web.de>				  |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -36,7 +36,7 @@ class Net_IPv6 {
      * Uncompresses an IPv6 adress
      * 
      * RFC 2373 allows you to compress zeros in an adress to '::'. This
-     * function expects an valid IPv6 adress and expands the '::' to 
+     * function expects an valid IPv6 adress and expands the '::' to
      * the required zeros.
      * 
      * Example:  FF01::101	->  FF01:0:0:0:0:0:0:101
@@ -99,7 +99,7 @@ class Net_IPv6 {
             $ipPart = explode(":", $ip);
             $ipComp = "";
             $flag   = true;
-            for ($i = 0; $i < count($ipPart); $i++) {
+            for ($i = 0; $i < count($ipPart); $i ++) {
                 if (!$ipPart[$i] and !$ipPart[$i+1]) {
                     break;
                 } else {
@@ -124,31 +124,31 @@ class Net_IPv6 {
         if ('::' == substr($ipCom, strlen($ipcom)-2 )) {
             $ip = substr($ipComp, 0, -1);
         } else {
-            $ip = $ipComp ;			
+            $ip = $ipComp ;
         }
         return $ip;
-		
+
     }
-    
+
     // }}}
     // {{{ SplitV64()
 
     /**
      * Splits an IPv6 adress into the IPv6 and a possible IPv4 part
-     * 
-     * RFC 2373 allows you to note the last two parts of an IPv6 adress as 
+     *
+     * RFC 2373 allows you to note the last two parts of an IPv6 adress as
      * an IPv4 compatible adress
-     * 
+     *
      * Example:  0:0:0:0:0:0:13.1.68.3
      *           0:0:0:0:0:FFFF:129.144.52.38
      *
      * @access public
-     * @static	
+     * @static
      * @param string $ip	a valid IPv6-adress (hex format)
      * @return array		[0] contains the IPv6 part, [1] the IPv4 part (hex format)
      */
     function SplitV64($ip) {
-        $ip = Net_IPv6::Uncompress($ip);			
+        $ip = Net_IPv6::Uncompress($ip);
         if (strstr($ip, '.')) {
             $pos = strrpos($ip, ':');
             $ip{$pos} = '_';
@@ -158,17 +158,17 @@ class Net_IPv6 {
             return array($ip, "");
         }
     }
-    
+
     // }}}
     // {{{ checkIPv6
 
     /**
-     * Checks an IPv6 adress 
-     * 
-     * Checks if the given IP is IPv6-compatible 
-     * 
+     * Checks an IPv6 adress
+     *
+     * Checks if the given IP is IPv6-compatible
+     *
      * @access public
-     * @static	
+     * @static
      * @param string $ip	a valid IPv6-adress
      * @return boolean	true if $ip is an IPv6 adress
      */
