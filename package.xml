@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "../package.dtd">
 <!-- do not use the "Type" attribute here, that one is only for
      generated package.xml files -->
-<package>
+<package version="1.0">
   <name>Net_IPv6</name>
   <summary>Class to validate and to work with IPv6</summary> 
-  <maintainer>
-    <user>alexmerz</user>
-    <name>Alexander Merz</name>
-    <email>alexander.merz@t-online.de</email>
-  </maintainer>
+  <maintainers>
+    <maintainer>
+      <user>alexmerz</user>
+      <name>Alexander Merz</name>
+      <email>alexander.merz@t-online.de</email>
+    </maintainer>
+  </maintainers>
   <release>
     <version>1.0</version>
     <date>2001-07-20</date>
     <notes>
 
     </notes>
+    <filelist>
+      <dir name="." baseinstalldir="Net">
+	<file>IPv6.php</file>
+      </dir>
+    </filelist>
   </release>
-  <filelist>
-    <dir>/</dir>
-    <file>IPv6.php</file>
-  </filelist>
 </package>
