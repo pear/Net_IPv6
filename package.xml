@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- do not use the "Type" attribute here, that one is only for
+     generated package.xml files -->
+<Package>
+  <Name>IPv6</Name>
+  <Summary>Class to validate and to work with IPv6</Summary> 
+  <Maintainer>
+    <Initials></Initials>
+    <Name>Alexander Merz</Name>
+    <Email>alexander.merz@t-online.de</Email>
+  </Maintainer>
+  <Release>
+    <Version>1.0</Version>
+    <Date>2001-07-20</Date>
+    <Notes>
+
+    </Notes>
+  </Release>
+  <FileList>
+    <Dir>/</Dir>
+    <File>IPv6.php</File>
+  </FileList>
+</Package>
