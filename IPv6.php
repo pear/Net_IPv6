@@ -179,7 +179,8 @@ class Net_IPv6 {
             $ipv6 = explode( ':', $ipPart[0]) ;
 
             for ($i = 0; $i < count( $ipv6); $i++) {
-                if ($ipv6[$i] >= 0x0 && $ipv6[$i] <= 0xFFFF ) {
+                $dec = hexdec($ipv6[$i]); 
+                if ($ipv6[$i] >= 0 && $dec <= 65535 && $ipv6[$i] == strtoupper(dechex($dec))) {
                     $count++;
                 }
             }
@@ -189,7 +190,7 @@ class Net_IPv6 {
                 $ipv4 = explode( '.',$ipPart[1]) ;
                 $count = 0 ;
                 for ($i = 0; $i < count( $ipv4); $i++) {
-                    if ($ipv4[$i] >= 0 && $ipv4[$i] <= 255 && preg_match("/^\d{1,3}$/", $ipv4[$i])) {
+                    if ($ipv4[$i] >= 0 && (integer)$ipv4[$i] <= 255 && preg_match("/^\d{1,3}$/", $ipv4[$i])) {
                         $count++;
                     }
                 }
