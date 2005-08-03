@@ -22,12 +22,12 @@
   </maintainers>
 
   <release>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <state>stable</state>
-    <date>2005-03-19</date>
+    <date>2005-08-03</date>
     <notes>
-     Bug #3851: IPv4-mapped/compatible IPv6 uncompress bug
-     Thanks to dtaylor at jasi dot com
+     Bug #4977: trying to compress where nothing is to compress
+     Thanks to pvenegas at gmail dot com
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -37,6 +37,15 @@
   </release>
 
   <changelog>
+  <release>
+    <version>1.0.3</version>
+    <state>stable</state>
+    <date>2005-03-19</date>
+    <notes>
+     Bug #3851: IPv4-mapped/compatible IPv6 uncompress bug
+     Thanks to dtaylor at jasi dot com
+    </notes>
+  </release>
   <release>
     <version>1.0.2</version>
     <state>stable</state>
