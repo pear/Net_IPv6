@@ -115,7 +115,7 @@ class Net_IPv6 {
      */
     function Compress($ip)	{
         $cip = $ip;
-        if (!strstr($ip, "::")) {
+        if (!strstr($ip, "::") && strstr($ip, '0:0')) {
             $ipp = explode(':',$ip);
             for($i=0; $i<count($ipp); $i++) {
                 $ipp[$i] = dechex(hexdec($ipp[$i]));
@@ -137,6 +137,8 @@ class Net_IPv6 {
                     $pattern = $pattern.":0";
                 }
             }
+
+
             $cip = preg_replace("/".substr($pattern,0,-2)."/", ':', $cip,1);
             if(1!=strlen($cip)) {
                 $cip = str_replace(':::', '::', $cip);
@@ -144,7 +146,6 @@ class Net_IPv6 {
             } else {
                 $cip = "::";
             }
-
         }
         return $cip;
 
