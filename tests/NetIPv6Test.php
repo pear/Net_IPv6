@@ -33,6 +33,18 @@ class NetIPv6Test extends PHPUnit2_Framework_TestCase {
 
 
 /**
+* this testcase handles Bug 4977
+* which covers the problem with wrong compressing where nothing is to
+* compress and zeros are replaced by ':'
+*
+*/
+public function testBug4977() {
+    $testip = "2001:ec8:1:1:1:1:1:1";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "2001:ec8:1:1:1:1:1:1", $is);
+}
+
+/**
 * this testcase handles Bug 3851
 * which covers the problem with uncompressing with an IPv4 part
 * in the ip
