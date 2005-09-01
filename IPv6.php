@@ -21,9 +21,8 @@
 /**
 * Class to validate and to work with IPv6
 *
-* Todo: some optimizations for checkIPv6()
-*
 * @author  Alexander Merz <alexander.merz@t-online.de>
+* @author elfrink at introweb dot nl
 * @package Net_IPv6
 * @version $Id$
 * @access  public
@@ -110,45 +109,32 @@ class Net_IPv6 {
      * @access public
      * @see Uncompress()
      * @static
-     * @param string $ip	a valid IPv6-adress (hex format)
+     * @param string $ip	a valid IPv6-adress (hex format)     
      * @return string	the compressed IPv6-adress (hex format)
+     * @author elfrink at introweb dot nl
      */
     function Compress($ip)	{
         $cip = $ip;
-        if (!strstr($ip, "::") && strstr($ip, '0:0')) {
-            $ipp = explode(':',$ip);
-            for($i=0; $i<count($ipp); $i++) {
-                $ipp[$i] = dechex(hexdec($ipp[$i]));
-                if(hexdec($ipp[$i])>0) {
-                    $ipp[$i]=$ipp[$i].'_';
-                }
-            }
-            $cip = join(':',$ipp);
-            $stop = false;
-            $pattern = "0:0";
-            $pos=-1;
 
-            while(!$stop) {
-               	$pos = strpos($cip, $pattern);
-                if($pos === false) {
-                    $stop = true;
-                    $pos = -1;
-                } else {
-                    $pattern = $pattern.":0";
-                }
-            }
-
-
-            $cip = preg_replace("/".substr($pattern,0,-2)."/", ':', $cip,1);
-            if(1!=strlen($cip)) {
-                $cip = str_replace(':::', '::', $cip);
-                $cip = str_replace('_', '', $cip);
-            } else {
-                $cip = "::";
-            }
-        }
-        return $cip;
-
+        if (!strstr($ip, '::')) {
+             $ipp = explode(':',$ip);
+             for($i=0; $i<count($ipp); $i++) {
+                 $ipp[$i] = dechex(hexdec($ipp[$i]));
+             }
+            $cip = ':' . join(':',$ipp) . ':';
+			preg_match_all("/(:0)+/", $cip, $zeros);
+    		if (count($zeros[0])>0) {
+				$match = '';
+				foreach($zeros[0] as $zero) {
+    				if (strlen($zero) > strlen($match))
+						$match = $zero;
+				}
+				$cip = preg_replace('/' . $match . '/', ':', $cip, 1);
+			}
+			$cip = preg_replace('/((^:)|(:$))/', '' ,$cip);
+            $cip = preg_replace('/((^:)|(:$))/', '::' ,$cip);
+         }
+         return $cip;
     }
 
     // }}}
