@@ -22,12 +22,12 @@
   </maintainers>
 
   <release>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <state>stable</state>
-    <date>2005-08-03</date>
+    <date>2005-09-01</date>
     <notes>
-     Bug #4977: trying to compress where nothing is to compress
-     Thanks to pvenegas at gmail dot com
+     Bug #3405 again: problem with compressing
+     Thanks to elfrink at introweb dot nl
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -37,7 +37,16 @@
   </release>
 
   <changelog>
-  <release>
+   <release>
+    <version>1.0.4</version>
+    <state>stable</state>
+    <date>2005-08-03</date>
+    <notes>
+     Bug #4977: trying to compress where nothing is to compress
+     Thanks to pvenegas at gmail dot com
+    </notes>
+   </release>
+   <release>
     <version>1.0.3</version>
     <state>stable</state>
     <date>2005-03-19</date>
@@ -45,8 +54,8 @@
      Bug #3851: IPv4-mapped/compatible IPv6 uncompress bug
      Thanks to dtaylor at jasi dot com
     </notes>
-  </release>
-  <release>
+   </release>
+   <release>
     <version>1.0.2</version>
     <state>stable</state>
     <date>2005-02-13</date>
