@@ -31,6 +31,53 @@ require_once "PHPUnit2/Framework/TestCase.php";
 */
 class NetIPv6Test extends PHPUnit2_Framework_TestCase {
 
+/**
+* this testcase handles an addition to Bug 3405
+* which covers the problem with compressing 0000
+*
+*/
+public function testBug3405_2() {
+    $testip = "2001:0618:0400:1c85:0999:0999:0999:0999";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "2001:618:400:1c85:999:999:999:999", $is);
+}
+
+/**
+* this testcase handles an addition to Bug 3405
+* which covers the problem with compressing 0000
+*
+*/
+public function testBug3405_3() {
+    $testip = "3ffe:02e0:0123:0123:0123:0123:0123:0123";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "3ffe:2e0:123:123:123:123:123:123", $is);
+}
+
+/**
+* this testcase handles an addition to Bug 3405
+* which covers the problem with compressing 0000
+*
+*/
+public function testBug3405_4() {
+    $testip = "fe80:0000:0250:8dff:0001:0002:0003:0004";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "fe80::250:8dff:1:2:3:4", $is);
+}
+
+
+
+
+/**
+* this testcase handles an addition to Bug 3405
+* which covers the problem with compressing 0000
+*
+*/
+public function testBug3405_1() {
+    $testip = "2001:0760:0202:f265:0001:0002:0003:0025";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "2001:760:202:f265:1:2:3:25", $is);
+}
+
 
 /**
 * this testcase handles Bug 4977
