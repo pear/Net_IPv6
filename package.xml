@@ -7,11 +7,13 @@
   <summary>Check and validate IPv6 addresses</summary>
   <description>
    The class allows you to:
-   * check if an addresse is an IPv6 addresse
+   * check if an address is an IPv6 address
    * compress/uncompress IPv6 addresses
-   * check for an IPv4 compatible ending in an IPv6 adresse
+   * check for an IPv4 compatible ending in an IPv6 address
+   * check the assigned address space of an IPv6 address
+   * do netmask calculations
   </description>
-  <license>PHP License</license>
+  <license>BSD</license>
   <maintainers>
     <maintainer>
       <user>alexmerz</user>
@@ -22,12 +24,22 @@
   </maintainers>
 
   <release>
-    <version>1.0.5</version>
-    <state>stable</state>
-    <date>2005-09-01</date>
+    <version>1.1.0RC1</version>
+    <state>beta</state>
+    <date>2005-11-24</date>
     <notes>
-     Bug #3405 again: problem with compressing
-     Thanks to elfrink at introweb dot nl
+     This new minor version adds some methods proposed
+     by Josh Peck (jmp @ joshpeck dot org).
+
+     + Change license to BSD
+     + Improved comments and docblocks
+     + add removeNetmaskSpec()
+     + add getNetmask()
+     + add isInNetmask()
+     + add getAddressType()
+     + add _ip2Bin()
+     + add _bin2Ip()
+     + add serveral constants for address types
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -37,6 +49,15 @@
   </release>
 
   <changelog>
+   <release>
+    <version>1.0.5</version>
+    <state>stable</state>
+    <date>2005-09-01</date>
+    <notes>
+     Bug #3405 again: problem with compressing
+     Thanks to elfrink at introweb dot nl
+    </notes>
+   </release>
    <release>
     <version>1.0.4</version>
     <state>stable</state>
