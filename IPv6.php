@@ -1,34 +1,266 @@
 <?php
-//
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Alexander Merz <alexander.merz@web.de>				  |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* Class to validate and to work with IPv6
-*
-* @author  Alexander Merz <alexander.merz@t-online.de>
-* @author elfrink at introweb dot nl
-* @package Net_IPv6
-* @version $Id$
-* @access  public
-*/
+ * This file contains the implementation of the Net_IPv6 class
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to the New BSD license, that is
+ * available through the world-wide-web at http://www.opensource.org/licenses/bsd-license.php
+ * If you did not receive a copy of the new BSDlicense and are unable
+ * to obtain it through the world-wide-web, please send a note to
+ * license@php.net so we can mail you a copy immediately
+ *
+ * @category Net
+ * @package Net_IPv6
+ * @author Alexander Merz <alexander.merz@web.de>
+ * @copyright 2003-2005 The PHP Group
+ * @license http://www.opensource.org/licenses/bsd-license.php
+ * @version CVS: $Id$
+ * @link http://pear.php.net/package/Net_IPv6
+ */
+
+// {{{ constants
+
+/**
+ * Error message if netmask bits was not found
+ * @see isInNetmask
+ */
+define("NET_IPV6_NO_NETMASK_MSG", "Netmask length not found");
+
+/**
+ * Error code if netmask bits was not found
+ * @see isInNetmask
+ */
+define("NET_IPV6_NO_NETMASK", 10);
+
+/**
+ * Address Type: Unassigned (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_UNASSIGNED", 1);
+
+/**
+ * Address Type: Reserved (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_RESERVED",  11);
+
+/**
+ * Address Type: Reserved for NSAP Allocation (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_RESERVED_NSAP", 12);
+
+/**
+ * Address Type: Reserved for IPX Allocation (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_RESERVED_IPX", 13);
+
+/**
+ * Address Type: Reserved for Geographic-Based Unicast Addresses (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_RESERVED_UNICAST_GEOGRAPHIC", 14);
+
+/**
+ * Address Type: Provider-Based Unicast Address (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_UNICAST_PROVIDER", 22);
+
+/**
+ * Address Type: Multicast Addresses (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_MULTICAST", 31);
+
+/**
+ * Address Type: Link Local Use Addresses (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_LOCAL_LINK", 42);
+
+/**
+ * Address Type: Link Local Use Addresses (RFC 1884, Section 2.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_LOCAL_SITE", 43);
+
+/**
+ * Address Type: address can not assigned to a specific type
+ * @see getAddressType()
+ */
+define("NET_IPV6_UNKNOWN_TYPE", 1001);
+
+// }}}
+// {{{ Net_IPv6
+
+/**
+ * Class to validate and to work with IPv6 addresses.
+ *
+ * @category Net
+ * @package Net_IPv6
+ * @author Alexander Merz <alexander.merz@web.de>
+ * @copyright 2003-2005 The PHP Group
+ * @license http://www.opensource.org/licenses/bsd-license.php
+ * @version CVS: $Id$
+ * @link http://pear.php.net/package/Net_IPv6
+ * @author elfrink at introweb dot nl
+ * @author Josh Peck <jmp at joshpeck dot org>
+ */
 class Net_IPv6 {
 
+    // {{{ removeNetmaskBits()
+
+    /**
+     * Removes a possible existing netmask specification at an IP addresse.
+     *
+     * @param String $ip the (compressed) IP as Hex representation
+     * @return String the IP without netmask length
+     * @since 1.1.0
+     * @access public
+     * @static
+     */
+    function removeNetmaskSpec($ip) {
+        list($addr, $nm) = explode('/', $ip);
+        return $addr;
+    }
+
+    // }}}
+    // {{{ getNetmask()
+
+    /**
+     * Calculates the network prefix based on the netmask bits.
+     *
+     * @param String $ip the (compressed) IP in Hex format
+     * @param int $bits if the number of netmask bits is not part of the IP
+     *                  you must provide the mumber of bits
+     * @return String the network prefix
+     * @since 1.1.0
+     * @access public
+     * @static
+     */
+    function getNetmask($ip, $bits = null) {
+        if(null==$bits) {
+            list($addr, $bits) = explode('/', $ip);
+        } else {
+            $addr = $ip;
+        }
+        $addr = Net_IPv6::uncompress($addr);
+        $binNetmask = str_repeat('1', $bits).str_repeat('0', 128 - $bits);
+        return Net_IPv6::_bin2Ip(Net_IPv6::_ip2Bin($addr) & $binNetmask);
+    }
+
+    // }}}
+    // {{{ isInNetmask()
+
+    /**
+     * Checks if an (compressed) IP is in a specific address space.
+     *
+     * IF the IP does not contains the number of netmask bits (F8000::FFFF/16)
+     * then you have to use the $bits parameter.
+     *
+     * @param String $ip the IP to check (eg. F800::FFFF)
+     * @param String $netmask the netmask (eg F800::)
+     * @param int $bits the number of netmask bits to compare, if not given in $ip
+     * @return boolean true if $ip is in the netmask
+     * @since 1.1.0
+     * @access public
+     * @static
+     */
+    function isInNetmask($ip, $netmask, $bits=null) {
+        // try to get the bit count
+        if(null == $bits) {
+            list($ip, $bits) = explode('/', $ip);
+            if("" == $bits) {
+                list($netmask, $bits) = explode('/', $netmask);
+                if("" == $bits) {
+                    require_once 'PEAR.php';
+                    return PEAR::raiseError(NET_IPV6_NO_NETMASK_MSG, NET_IPV6_NO_NETMASK);
+                }
+            }
+        }
+
+        $binIp = Net_IPv6::_ip2Bin(Net_IPv6::removeNetmaskSpec($ip));
+        $binNetmask = Net_IPv6::_ip2Bin(Net_IPv6::removeNetmaskSpec($netmask));
+        if(null != $bits && "" != $bits && 0 == strncmp( $binNetmask, $binIp, $bits)) {
+            return true;
+        }
+        return false;
+    }
+
+    // }}}
+    // {{{ getAddressType()
+
+    /**
+     * Returns the type of an IPv6 address.
+     *
+     * RFC 1883, Section 2.3 describes several types of addresses in
+     * the IPv6 addresse space.
+     * Several addresse types are markers for reserved spaces and as consequence
+     * a subject to change.
+     *
+     * @param String $ip the IP address in Hex format, compressed IPs are allowed
+     * @return int one of the addresse type constants
+     * @access public
+     * @since 1.1.0
+     * @static
+     *
+     * @see NET_IPV6_UNASSIGNED
+     * @see NET_IPV6_RESERVED
+     * @see NET_IPV6_RESERVED_NSAP
+     * @see NET_IPV6_RESERVED_IPX
+     * @see NET_IPV6_RESERVED_UNICAST_GEOGRAPHIC
+     * @see NET_IPV6_UNICAST_PROVIDER
+     * @see NET_IPV6_MULTICAST
+     * @see NET_IPV6_LOCAL_LINK
+     * @see NET_IPV6_LOCAL_SITE
+     * @see NET_IPV6_UNKNOWN_TYPE
+     */
+    function getAddressType($ip) {
+        $ip = Net_IPv6::removeNetmaskSpec($ip);
+        $binip = Net_IPv6::_ip2Bin($ip);
+        if(0 == strncmp('1111111010', $binip, 10)) {
+            return NET_IPV6_LOCAL_LINK;
+        } else if(0 == strncmp('1111111011', $binip, 10)) {
+            return NET_IPV6_LOCAL_SITE;
+        } else if (0 == strncmp('111111100', $binip, 9)) {
+            return NET_IPV6_UNASSIGNED;
+        } else if (0 == strncmp('11111111', $binip, 8)) {
+            return NET_IPV6_MULTICAST;
+        }  else if (0 == strncmp('00000000', $binip, 8)) {
+            return NET_IPV6_RESERVED;
+        } else if (0 == strncmp('00000001', $binip, 8) ||
+                   0 == strncmp('1111110', $binip, 7)) {
+            return NET_IPV6_UNASSIGNED;
+        } else if (0 == strncmp('0000001', $binip, 7)) {
+            return NET_IPV6_RESERVED_NSAP;
+        } else if (0 == strncmp('0000010', $binip, 7)) {
+            return NET_IPV6_RESERVED_IPX;;
+        } else if (0 == strncmp('0000011', $binip, 7) ||
+                    0 == strncmp('111110', $binip, 6) ||
+                    0 == strncmp('11110', $binip, 5) ||
+                    0 == strncmp('00001', $binip, 5) ||
+                    0 == strncmp('1110', $binip, 4) ||
+                    0 == strncmp('0001', $binip, 4) ||
+                    0 == strncmp('001', $binip, 3) ||
+                    0 == strncmp('011', $binip, 3) ||
+                    0 == strncmp('101', $binip, 3) ||
+                    0 == strncmp('110', $binip, 3)) {
+            return NET_IPV6_UNASSIGNED;
+        } else if (0 == strncmp('010', $binip, 3)) {
+            return NET_IPV6_UNICAST_PROVIDER;
+        }  else if (0 == strncmp('100', $binip, 3)) {
+            return NET_IPV6_RESERVED_UNICAST_GEOGRAPHIC;
+        }
+        return NET_IPV6_UNKNOWN_TYPE;
+    }
+
+    // }}}
     // {{{ Uncompress()
 
     /**
@@ -48,7 +280,7 @@ class Net_IPv6 {
      * @return string	the uncompressed IPv6-adress (hex format)
 	 */
     function Uncompress($ip) {
-        $uip = $ip;
+        $uip = Net_IPv6::removeNetmaskSpec($ip);
         $c1 = -1;
         $c2 = -1;
         if (false !== strpos($ip, '::') ) {
@@ -109,12 +341,12 @@ class Net_IPv6 {
      * @access public
      * @see Uncompress()
      * @static
-     * @param string $ip	a valid IPv6-adress (hex format)     
+     * @param string $ip	a valid IPv6-adress (hex format)
      * @return string	the compressed IPv6-adress (hex format)
      * @author elfrink at introweb dot nl
      */
     function Compress($ip)	{
-        $cip = $ip;
+        $cip = Net_IPv6::removeNetmaskSpec($ip);
 
         if (!strstr($ip, '::')) {
              $ipp = explode(':',$ip);
@@ -155,6 +387,7 @@ class Net_IPv6 {
      * @return array		[0] contains the IPv6 part, [1] the IPv4 part (hex format)
      */
     function SplitV64($ip) {
+        $ip = Net_IPv6::removeNetmaskSpec($ip);
         $ip = Net_IPv6::Uncompress($ip);
         if (strstr($ip, '.')) {
             $pos = strrpos($ip, ':');
@@ -167,7 +400,7 @@ class Net_IPv6 {
     }
 
     // }}}
-    // {{{ checkIPv6
+    // {{{ checkIPv6()
 
     /**
      * Checks an IPv6 adress
@@ -180,7 +413,7 @@ class Net_IPv6 {
      * @return boolean	true if $ip is an IPv6 adress
      */
     function checkIPv6($ip) {
-
+        $ip = Net_IPv6::removeNetmaskSpec($ip);
         $ipPart = Net_IPv6::SplitV64($ip);
         $count = 0;
         if (!empty($ipPart[0])) {
@@ -213,6 +446,65 @@ class Net_IPv6 {
             return false;
         }
     }
+
+    // }}}
+    // {{{ _ip2Bin()
+
+    /**
+     * Converts an IPv6 address from Hex into Binary representation.
+     *
+     * @param String $ip the IP to convert (a:b:c:d:e:f:g:h), compressed IPs are allowed
+     * @return String the binary representation
+     * @access private
+     @ @since 1.1.0
+     */
+    function _ip2Bin($ip) {
+        $binstr = '';
+        $ip = Net_IPv6::removeNetmaskSpec($ip);
+        $ip = Net_IPv6::Uncompress($ip);
+        $parts = explode(':', $ip);
+        foreach($parts as $v) {
+            $str = base_convert($v, 16, 2);
+            $binstr .= str_pad($str, 16, '0', STR_PAD_LEFT);
+        }
+        return $binstr;
+    }
+
+    // }}}
+    // {{{ _bin2Ip()
+
+    /**
+     * Converts an IPv6 address from Binary into Hex representation.
+     *
+     * @param String $ip the IP as binary
+     * @return String the uncompressed Hex representation
+     * @access private
+     @ @since 1.1.0
+     */
+    function _bin2Ip($bin) {
+        $ip = "";
+        if(strlen($bin)<128) {
+            $bin = str_pad($str, 128, '0', STR_PAD_LEFT);
+        }
+        $parts = str_split($bin, "16");
+        foreach($parts as $v) {
+            $str = base_convert($v, 2, 16);
+            $ip .= $str.":";
+        }
+        $ip = substr($ip, 0,-1);
+        return $ip;
+    }
+
     // }}}
 }
+// }}}
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * c-hanging-comment-ender-p: nil
+ * End:
+ */
+
 ?>
