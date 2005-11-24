@@ -32,50 +32,134 @@ require_once "PHPUnit2/Framework/TestCase.php";
 class NetIPv6Test extends PHPUnit2_Framework_TestCase {
 
 /**
-* this testcase handles an addition to Bug 3405
-* which covers the problem with compressing 0000
-*
-*/
-public function testBug3405_2() {
-    $testip = "2001:0618:0400:1c85:0999:0999:0999:0999";
-    $is = Net_IPv6::compress($testip);
-    $this->assertEquals( "2001:618:400:1c85:999:999:999:999", $is);
+ * tests isInNetmask() with no netmask length given
+ */
+public function testIsInNetmaskNoNetmask() {
+    $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
+    $testprefix = "EE80::";
+    $is = Net_IPv6::isInNetmask($testip, $testprefix);
+    $this->assertTrue(PEAR::isError($is));
 }
 
 /**
-* this testcase handles an addition to Bug 3405
-* which covers the problem with compressing 0000
-*
-*/
-public function testBug3405_3() {
-    $testip = "3ffe:02e0:0123:0123:0123:0123:0123:0123";
-    $is = Net_IPv6::compress($testip);
-    $this->assertEquals( "3ffe:2e0:123:123:123:123:123:123", $is);
+ * tests isInNetmask() with the netmask length in
+ * the third parameter
+ */
+public function testIsInNetmaskWithBitsAsParameter() {
+    $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
+    $testprefix = "FE80::";
+    $is = Net_IPv6::isInNetmask($testip, $testprefix, 16);
+    $this->assertTrue($is);
 }
 
 /**
-* this testcase handles an addition to Bug 3405
-* which covers the problem with compressing 0000
-*
-*/
-public function testBug3405_4() {
-    $testip = "fe80:0000:0250:8dff:0001:0002:0003:0004";
-    $is = Net_IPv6::compress($testip);
-    $this->assertEquals( "fe80::250:8dff:1:2:3:4", $is);
+ * tests isInNetmask() with the netmask length in
+ * the second parameter
+ */
+public function testIsInNetmaskWithBitsInNetmask() {
+    $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
+    $testprefix = "FE80::/16";
+    $is = Net_IPv6::isInNetmask($testip, $testprefix);
+    $this->assertTrue($is);
+}
+
+/**
+ * tests isInNetmask() with the netmask length in
+ * the first parameter
+ */
+public function testIsInNetmaskWithBitsInIP() {
+    $testip = "FE80:FFFF:0:FFFF:129:144:52:38/16";
+    $testprefix = "FE80::";
+    $is = Net_IPv6::isInNetmask($testip, $testprefix);
+    $this->assertTrue($is);
+}
+
+/**
+ * tests getNetmask with two parameters
+ */
+public function testGetNetmaskTwoParameters() {
+    $testip = "FE80:0:0:FFFF:129:144:52:38";
+    $is = Net_IPv6::getNetmask($testip, 16);
+    $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
+}
+
+/**
+ * tests getNetmask with one parameter
+ */
+public function testGetNetmaskOneParameter() {
+    $testip = "FE80:0:0:FFFF:129:144:52:38/16";
+    $is = Net_IPv6::getNetmask($testip);
+    $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
+}
+
+/**
+ * test getAddressType - Link Local
+ */
+public function testGetAddressTypeLinkLocal() {
+    $testip = "FE80:0:0:FFFF:129:144:52:38";
+    $is = Net_IPv6::getAddressType($testip);
+    $this->assertEquals( NET_IPV6_LOCAL_LINK, $is);
+}
+
+/**
+ * test getAddressType - Unassigned
+ */
+public function testGetAddressTypeUnassigned() {
+    $testip = "E000:0:0:FFFF:129:144:52:38";
+    $is = Net_IPv6::getAddressType($testip);
+    $this->assertEquals( NET_IPV6_UNASSIGNED, $is);
+}
+
+/**
+ * test the Bin2Ip method
+ */
+public function testBin2Ip() {
+    $testip = "1111111111111111".
+              "0000000000000000".
+              "0000000000000000".
+              "1111111111111111".
+              "0000000100101001".
+              "0000000101000100".
+              "0000000001010010".
+              "0000000000111000";
+    $is = Net_IPv6::_bin2Ip($testip);
+    $this->assertEquals( "ffff:0:0:ffff:129:144:52:38", $is);
 }
 
 
+/**
+ * test the IP2Bin method with an uncompressed ip
+ */
+public function testIp2BinUncompressed() {
+    $testip = "ffff:0:0:FFFF:129:144:52:38";
+    $is = Net_IPv6::_ip2Bin($testip);
+    $this->assertEquals( "1111111111111111".
+                         "0000000000000000".
+                         "0000000000000000".
+                         "1111111111111111".
+                         "0000000100101001".
+                         "0000000101000100".
+                         "0000000001010010".
+                         "0000000000111000"
+                         ,$is);
+}
 
 
 /**
-* this testcase handles an addition to Bug 3405
-* which covers the problem with compressing 0000
-*
-*/
-public function testBug3405_1() {
-    $testip = "2001:0760:0202:f265:0001:0002:0003:0025";
-    $is = Net_IPv6::compress($testip);
-    $this->assertEquals( "2001:760:202:f265:1:2:3:25", $is);
+ * test the IP2Bin method with a compressed ip
+ */
+public function testIp2BinCompressed() {
+    $testip = "ffff::FFFF:129:144:52:38";
+    $is = Net_IPv6::_ip2Bin($testip);
+    $this->assertEquals( "1111111111111111".
+                         "0000000000000000".
+                         "0000000000000000".
+                         "1111111111111111".
+                         "0000000100101001".
+                         "0000000101000100".
+                         "0000000001010010".
+                         "0000000000111000"
+                         ,$is);
 }
 
 
