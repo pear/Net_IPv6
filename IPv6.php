@@ -126,7 +126,11 @@ class Net_IPv6 {
      * @static
      */
     function removeNetmaskSpec($ip) {
-        list($addr, $nm) = explode('/', $ip);
+        if(false !== strpos($ip, '/')) {
+            list($addr, $nm) = explode('/', $ip);
+        } else {
+            $addr = $ip;                
+        }
         return $addr;
     }
 
