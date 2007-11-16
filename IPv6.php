@@ -126,12 +126,34 @@ class Net_IPv6 {
      * @static
      */
     function removeNetmaskSpec($ip) {
+        $addr = $ip;
         if(false !== strpos($ip, '/')) {
-            list($addr, $nm) = explode('/', $ip);
-        } else {
-            $addr = $ip;                
+            $elements = explode('/', $ip);
+            if(2 == count($elements)) {
+                $addr = $elements[0];
+            }
         }
         return $addr;
+    }
+
+    /**
+     * Returns a possible existing netmask specification at an IP addresse.
+     *
+     * @param String $ip the (compressed) IP as Hex representation
+     * @return String the netmask spec
+     * @since 1.1.0
+     * @access public
+     * @static
+     */
+    function getNetmaskSpec($ip) {
+        $spec = '';
+        if(false !== strpos($ip, '/')) {
+            $elements = explode('/', $ip);
+            if(2 == count($elements)) {
+                $spec = $elements[1];
+            }
+        }
+        return $spec;
     }
 
     // }}}
@@ -142,7 +164,7 @@ class Net_IPv6 {
      *
      * @param String $ip the (compressed) IP in Hex format
      * @param int $bits if the number of netmask bits is not part of the IP
-     *                  you must provide the mumber of bits
+     *                  you must provide the number of bits
      * @return String the network prefix
      * @since 1.1.0
      * @access public
@@ -150,7 +172,14 @@ class Net_IPv6 {
      */
     function getNetmask($ip, $bits = null) {
         if(null==$bits) {
-            list($addr, $bits) = explode('/', $ip);
+            $elements = explode('/', $ip);
+            if(2 == count($elements)) {
+                $addr = $elements[0];
+                $bits = $elements[1];
+            } else {
+                require_once 'PEAR.php';
+                return PEAR::raiseError(NET_IPV6_NO_NETMASK_MSG, NET_IPV6_NO_NETMASK);
+            }
         } else {
             $addr = $ip;
         }
@@ -179,10 +208,17 @@ class Net_IPv6 {
     function isInNetmask($ip, $netmask, $bits=null) {
         // try to get the bit count
         if(null == $bits) {
-            list($ip, $bits) = explode('/', $ip);
-            if("" == $bits) {
-                list($netmask, $bits) = explode('/', $netmask);
-                if("" == $bits) {
+            $elements = explode('/', $ip);
+            if(2 == count($elements)) {
+                $ip = $elements[0];
+                $bits = $elements[1];
+            } else if(null == $bits) {
+                $elements = explode('/', $netmask);
+                if(2 == count($elements)) {
+                     $netmask = $elements[0];
+                     $bits = $elements[1];
+                }
+                if(null == $bits) {
                     require_once 'PEAR.php';
                     return PEAR::raiseError(NET_IPV6_NO_NETMASK_MSG, NET_IPV6_NO_NETMASK);
                 }
@@ -284,11 +320,14 @@ class Net_IPv6 {
      * @return string	the uncompressed IPv6-adress (hex format)
 	 */
     function Uncompress($ip) {
+        $netmask = Net_IPv6::getNetmaskSpec($ip);
         $uip = Net_IPv6::removeNetmaskSpec($ip);
+
         $c1 = -1;
         $c2 = -1;
-        if (false !== strpos($ip, '::') ) {
-            list($ip1, $ip2) = explode('::', $ip);
+        if (false !== strpos($uip, '::') ) {
+            list($ip1, $ip2) = explode('::', $uip);
+
             if(""==$ip1) {
                 $c1 = -1;
             } else {
@@ -326,6 +365,9 @@ class Net_IPv6 {
                 $uip =  str_replace('::', ':', $uip);
             }
         }
+        if('' != $netmask) {
+                $uip = $uip.'/'.$netmask;
+        }
         return $uip;
     }
 
@@ -350,8 +392,9 @@ class Net_IPv6 {
      * @author elfrink at introweb dot nl
      */
     function Compress($ip)	{
-        $cip = Net_IPv6::removeNetmaskSpec($ip);
 
+        $netmask = Net_IPv6::getNetmaskSpec($ip);
+        $ip = Net_IPv6::removeNetmaskSpec($ip);
         if (!strstr($ip, '::')) {
              $ipp = explode(':',$ip);
              for($i=0; $i<count($ipp); $i++) {
@@ -369,6 +412,9 @@ class Net_IPv6 {
 			}
 			$cip = preg_replace('/((^:)|(:$))/', '' ,$cip);
             $cip = preg_replace('/((^:)|(:$))/', '::' ,$cip);
+         }
+         if('' != $netmask) {
+                $cip = $cip.'/'.$netmask;
          }
          return $cip;
     }

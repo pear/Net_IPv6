@@ -19,7 +19,7 @@
 // $Id$
 
 require_once "Net/IPv6.php";
-require_once "PHPUnit2/Framework/TestCase.php";
+require_once "PHPUnit/Framework/TestCase.php";
 
 /**
 * This testcases tests for several bugs and general topics
@@ -29,7 +29,7 @@ require_once "PHPUnit2/Framework/TestCase.php";
 * @version $Id$
 * @access  public
 */
-class NetIPv6Test extends PHPUnit2_Framework_TestCase {
+class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
 /**
  * tests isInNetmask() with no netmask length given
@@ -221,6 +221,21 @@ public function testBug2803() {
     $testip = "0:0:0:0588:0:FAEF:1428:57AB";
     $is = Net_IPv6::compress($testip);
     $this->assertEquals( "::588:0:faef:1428:57ab", $is);
+}
+
+/**
+* handle Bug 12442
+* Netmask is miss assigned during compression/uncompression
+*/
+public function testBug12442() {
+
+    $testip = "2001:4abc:abcd:0000:3744:0000:0000:0000/120";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "2001:4abc:abcd:0:3744::/120", $is);
+
+    $testip = "2001:4abc:abcd:0:3744::/120";
+    $is = Net_IPv6::uncompress($testip);
+    $this->assertEquals( "2001:4abc:abcd:0:3744:0:0:0/120", $is);
 }
 
 /**
