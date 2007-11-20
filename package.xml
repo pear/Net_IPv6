@@ -24,6 +24,23 @@
   </maintainers>
 
   <release>
+    <version>1.1.0RC2</version>
+    <state>beta</state>
+    <date>2007-11-20</date>
+    <notes>
+     Fix Bug #12442, thanks to pear at erikdebruijn dot nl
+
+     + add getNetmaskSpec()
+    </notes>
+    <filelist>
+      <dir name="/" baseinstalldir="Net">
+        <file role="php">IPv6.php</file>
+      </dir>
+    </filelist>
+  </release>
+
+  <changelog>
+   <release>
     <version>1.1.0RC1</version>
     <state>beta</state>
     <date>2005-11-24</date>
@@ -41,14 +58,7 @@
      + add _bin2Ip()
      + add serveral constants for address types
     </notes>
-    <filelist>
-      <dir name="/" baseinstalldir="Net">
-        <file role="php">IPv6.php</file>
-      </dir>
-    </filelist>
-  </release>
-
-  <changelog>
+   </release>
    <release>
     <version>1.0.5</version>
     <state>stable</state>
