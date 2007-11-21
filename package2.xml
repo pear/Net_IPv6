@@ -19,11 +19,11 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2007-11-20</date>
- <time>01:31:00</time>
+ <date>2007-11-21</date>
+ <time>18:15:09</time>
  <version>
-  <release>1.1.0RC2</release>
-  <api>1.1.0RC2</api>
+  <release>1.1.0RC3</release>
+  <api>1.1.0RC3</api>
  </version>
  <stability>
   <release>beta</release>
@@ -50,6 +50,22 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.1.0RC2</release>
+    <api>1.1.0RC2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-02-09</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>- fixed a notice, when removeNetmaskSpec is used on an IP
+without a netmask
+
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.1.0RC1</release>
