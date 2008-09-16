@@ -310,16 +310,26 @@ class Net_IPv6 {
      * function expects an valid IPv6 adress and expands the '::' to
      * the required zeros.
      *
-     * Example:  FF01::101	->  FF01:0:0:0:0:0:0:101
+     * Example:  FF01::101  ->  FF01:0:0:0:0:0:0:101
      *           ::1        ->  0:0:0:0:0:0:0:1
      *
      * @access public
      * @see Compress()
      * @static
-     * @param string $ip	a valid IPv6-adress (hex format)
-     * @return string	the uncompressed IPv6-adress (hex format)
-	 */
+     * @param string $ip    a valid IPv6-adress (hex format)
+     * @return string   the uncompressed IPv6-adress (hex format)
+     */
     function Uncompress($ip) {
+
+        $prefix = Net_IPv6::getPrefixLength($ip);
+
+        if(false === $prefix) {
+            $prefix = '';
+        } else {
+            $ip = Net_IPv6::removePrefixLength($ip);
+            $prefix = '/'.$prefix;
+        }
+
         $netmask = Net_IPv6::getNetmaskSpec($ip);
         $uip = Net_IPv6::removeNetmaskSpec($ip);
 
@@ -331,7 +341,7 @@ class Net_IPv6 {
             if(""==$ip1) {
                 $c1 = -1;
             } else {
-               	$pos = 0;
+                $pos = 0;
                 if(0 < ($pos = substr_count($ip1, ':'))) {
                     $c1 = $pos;
                 } else {
@@ -368,7 +378,7 @@ class Net_IPv6 {
         if('' != $netmask) {
                 $uip = $uip.'/'.$netmask;
         }
-        return $uip;
+        return $uip.$prefix;
     }
 
     // }}}
@@ -381,17 +391,26 @@ class Net_IPv6 {
      * function expects an valid IPv6 adress and compresses successive zeros
      * to '::'
      *
-     * Example:  FF01:0:0:0:0:0:0:101 	-> FF01::101
+     * Example:  FF01:0:0:0:0:0:0:101   -> FF01::101
      *           0:0:0:0:0:0:0:1        -> ::1
      *
      * @access public
      * @see Uncompress()
      * @static
-     * @param string $ip	a valid IPv6-adress (hex format)
-     * @return string	the compressed IPv6-adress (hex format)
+     * @param string $ip    a valid IPv6-adress (hex format)
+     * @return string   the compressed IPv6-adress (hex format)
      * @author elfrink at introweb dot nl
      */
-    function Compress($ip)	{
+    function Compress($ip)  {
+
+        $prefix = Net_IPv6::getPrefixLength($ip);
+
+        if(false === $prefix) {
+            $prefix = '';
+        } else {
+            $ip = Net_IPv6::removePrefixLength($ip);
+            $prefix = '/'.$prefix;
+        }
 
         $netmask = Net_IPv6::getNetmaskSpec($ip);
         $ip = Net_IPv6::removeNetmaskSpec($ip);
@@ -401,22 +420,22 @@ class Net_IPv6 {
                  $ipp[$i] = dechex(hexdec($ipp[$i]));
              }
             $cip = ':' . join(':',$ipp) . ':';
-			preg_match_all("/(:0)+/", $cip, $zeros);
-    		if (count($zeros[0])>0) {
-				$match = '';
-				foreach($zeros[0] as $zero) {
-    				if (strlen($zero) > strlen($match))
-						$match = $zero;
-				}
-				$cip = preg_replace('/' . $match . '/', ':', $cip, 1);
-			}
-			$cip = preg_replace('/((^:)|(:$))/', '' ,$cip);
+            preg_match_all("/(:0)+/", $cip, $zeros);
+            if (count($zeros[0])>0) {
+                $match = '';
+                foreach($zeros[0] as $zero) {
+                    if (strlen($zero) > strlen($match))
+                        $match = $zero;
+                }
+                $cip = preg_replace('/' . $match . '/', ':', $cip, 1);
+            }
+            $cip = preg_replace('/((^:)|(:$))/', '' ,$cip);
             $cip = preg_replace('/((^:)|(:$))/', '::' ,$cip);
          }
          if('' != $netmask) {
                 $cip = $cip.'/'.$netmask;
          }
-         return $cip;
+         return $cip.$prefix;
     }
 
     // }}}
@@ -433,12 +452,14 @@ class Net_IPv6 {
      *
      * @access public
      * @static
-     * @param string $ip	a valid IPv6-adress (hex format)
-     * @return array		[0] contains the IPv6 part, [1] the IPv4 part (hex format)
+     * @param string $ip    a valid IPv6-adress (hex format)
+     * @return array        [0] contains the IPv6 part, [1] the IPv4 part (hex format)
      */
-    function SplitV64($ip) {
+    function SplitV64($ip, $uncompress = true) {
         $ip = Net_IPv6::removeNetmaskSpec($ip);
-        $ip = Net_IPv6::Uncompress($ip);
+        if($uncompress) {
+            $ip = Net_IPv6::Uncompress($ip);
+        }
         if (strstr($ip, '.')) {
             $pos = strrpos($ip, ':');
             $ip{$pos} = '_';
@@ -459,11 +480,14 @@ class Net_IPv6 {
      *
      * @access public
      * @static
-     * @param string $ip	a valid IPv6-adress
-     * @return boolean	true if $ip is an IPv6 adress
+     * @param string $ip    a valid IPv6-adress
+     * @return boolean  true if $ip is an IPv6 adress
      */
     function checkIPv6($ip) {
+      
+        $ip = Net_IPv6::removePrefixLength($ip);
         $ip = Net_IPv6::removeNetmaskSpec($ip);
+
         $ipPart = Net_IPv6::SplitV64($ip);
         $count = 0;
         if (!empty($ipPart[0])) {
@@ -495,6 +519,48 @@ class Net_IPv6 {
         } else {
             return false;
         }
+    }
+
+    // }}}
+    // {{{ getPrefixLength()
+
+    /**
+     * Tests for a prefix length specification in the address
+     * and returns the prefix length, if exists
+     *
+     * @access public
+     * @static
+     * @param  String $ip a valid ipv6 address
+     * @return Mixed the prefix as String or false, if no prefix was found
+     */
+    function getPrefixLength($ip) {
+        if(preg_match("/^([0-9a-fA-F:]{2,39})\/(\d{1,3})*$/", $ip, $matches)) {
+            return $matches[2];
+        } else {
+            return false;
+        }
+    }
+
+    // }}}
+    // {{{ removePrefixLength()
+
+    /**
+     * Tests for a prefix length specification in the address
+     * and removes the prefix length, if exists
+     *
+     * @access public
+     * @static
+     * @param  String $ip a valid ipv6 address
+     * @return String the address without a prefix length
+     */
+    function removePrefixLength($ip) {
+        $pos = strrpos($ip, '/');
+
+        if(false !== $pos) {
+            return substr($ip, 0, $pos);
+        }
+
+        return $ip;
     }
 
     // }}}

@@ -31,6 +31,17 @@ require_once "PHPUnit/Framework/TestCase.php";
 */
 class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
+
+/**
+ * tests if checkIPv6 can handle prefix length
+ */
+public function testChechIPv6WithPrefix() {
+    $testip = "FE80:FFFF:0:FFFF:129:144:52:38/60";
+    $is     = Net_IPv6::checkIPv6($testip);
+
+    $this->assertTrue($is);
+}
+
 /**
  * tests isInNetmask() with no netmask length given
  */
@@ -269,6 +280,17 @@ public function testCompress3() {
 }
 
 /**
+* this testcase handles compress with a prefix length spec
+*
+*/
+public function testCompressWithPrefixLength() {
+    $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
+    $is = Net_IPv6::compress($testip);
+    $this->assertEquals( "::ffff:5056:5000/116", $is);
+}
+
+
+/**
 * this testcase handles uncompress
 *
 */
@@ -297,5 +319,41 @@ public function testUncompress3() {
     $is = Net_IPv6::uncompress($testip);
     $this->assertEquals( "1:0:0:0:0:0:0:0", $is);
 }
+
+/**
+* this testcase handles uncompress with a prefix length spec
+*
+*/
+public function testUncompressWithPrefixLength() {
+    $testip = "::ffff:5056:5000/116";
+    $is     = Net_IPv6::uncompress($testip);
+
+    $this->assertEquals( "0:0:0:0:0:ffff:5056:5000/116", $is);
+}
+
+
+/**
+* this testcase handles get Prefix length
+*
+*/
+public function testGetPrefixLength() {
+    $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
+    $prefix = Net_IPv6::getPrefixLength($testip);
+
+    $this->assertEquals( "116", $prefix);
+}
+
+/**
+* this testcase handles remove a Prefix length
+*
+*/
+public function testRemovePrefixLength() {
+    $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
+
+    $ip = Net_IPv6::removePrefixLength($testip);
+
+    $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
+}
+
 
 }
