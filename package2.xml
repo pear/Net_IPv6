@@ -19,11 +19,11 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2008-09-16</date>
+ <date>2008-10-28</date>
  <time>18:15:09</time>
  <version>
-  <release>1.1.0RC4</release>
-  <api>1.1.0RC4</api>
+  <release>1.1.0b1</release>
+  <api>1.1.0b1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -31,7 +31,11 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-  take care of prefix length specification in an address, thanks to Jens Ott
+  Because this release adds a new method and some bug tickets are still open, the package
+  release is named as Beta, instead of releasing a 5th RC version.
+  
+  #14728   add parseAddress(), thanks to Nicholas Williams!
+  #14767   most CS issues should be solved
  </notes>
  <contents>
   <dir name="/">
@@ -50,6 +54,18 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </dependencies>
  <phprelease />
  <changelog>
+  <version>
+   <release>1.1.0RC4</release>
+   <api>1.1.0RC4</api>
+  </version>
+  <stability>
+   <release>beta</release>
+   <api>beta</api>
+  </stability>
+  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+  <notes>
+   take care of prefix length specification in an address, thanks to Jens Ott
+  </notes>
   <release>
    <version>
     <release>1.1.0RC3</release>
