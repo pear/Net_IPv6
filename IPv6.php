@@ -766,6 +766,76 @@ class Net_IPv6 {
     }
 
     // }}}
+
+    // {{{ _parseAddress()
+
+    /**
+     * Returns the lowest and highest IPv6 address
+     * for a given IP and netmask specification
+     * 
+     * The netmask may be a part of the $ip or 
+     * the number of netwask bits is provided via $bits
+     *
+     * The result is an indexed array. The key 'start'
+     * contains the lowest possible IP adress. The key
+     * 'end' the highest address.
+     *
+     * @param  String $ip the IPv6 address
+     * @param  String $bits the optional count of netmask bits
+     *
+     * @return Array ['start', 'end'] the lowest and highest IPv6 address
+     * @access public
+     * @static
+     * @author Nicholas Williams
+     */
+
+    function parseAddress($ipToParse, $bits = null)
+    {
+
+        $ip      = null;
+        $bitmask = null;
+
+    	if( null == $bits )
+    	{
+
+    		$elements = explode('/', $ipToParse);
+
+    		if( 2 == count($elements) ) {
+
+    			$ip      = Net_IPv6::uncompress($elements[0]);
+    			$bitmask = $elements[1];
+
+    		} else {
+
+    			include_once 'PEAR.php';
+
+    			return PEAR::raiseError(NET_IPV6_NO_NETMASK_MSG,
+                                        NET_IPV6_NO_NETMASK);
+    		}
+    	}
+    	else
+    	{
+
+    		$ip      = Net_IPv6::uncompress($ipToParse);
+    		$bitmask = $bits;
+
+    	}
+
+    	$binNetmask = str_repeat('1', $bitmask).
+                      str_repeat('0', 128 - $bitmask);
+    	$maxNetmask = str_repeat('1', 128);
+    	$netmask    = Net_IPv6::_bin2Ip($binNetmask);
+
+    	$startAddress = Net_IPv6::_bin2Ip(Net_IPv6::_ip2Bin($ip) 
+                        & $binNetmask);
+    	$endAddress   = Net_IPv6::_bin2Ip(Net_IPv6::_ip2Bin($ip)
+                        | ($binNetmask ^ $maxNetmask));
+
+    	return array('start' => $startAddress, 'end' => $endAddress);
+    }
+
+    // }}}
+
     // {{{ _ip2Bin()
 
     /**
