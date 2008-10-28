@@ -355,5 +355,15 @@ public function testRemovePrefixLength() {
     $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
 }
 
+public function testParseAddress() {
+
+    $testip = "2001:502:f3ff::/48";
+
+    $result = Net_IPv6::parseAddress($testip);
+
+    $this->assertEquals( "2001:502:f3ff:0:0:0:0:0", $result['start']);
+    $this->assertEquals( "2001:502:f3ff:ffff:ffff:ffff:ffff:ffff", $result['end']);
+
+}
 
 }
