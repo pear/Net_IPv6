@@ -576,14 +576,18 @@ class Net_IPv6 {
             $cip = preg_replace('/((^:)|(:$))/', '' ,$cip);
             $cip = preg_replace('/((^:)|(:$))/', '::' ,$cip);
 
-         }
-         if ('' != $netmask) {
+            if ('' != $netmask) {
 
                 $cip = $cip.'/'.$netmask;
 
+            }
+
+            return $cip.$prefix;
+
          }
 
-         return $cip.$prefix;
+         return $ip.$prefix;
+
     }
 
     // }}}
