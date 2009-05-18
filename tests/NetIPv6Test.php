@@ -211,16 +211,18 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Should handle compr
+     * this testcase handles Bug 14747
+     * which covers already compressed adresses
+     * to keep as is
      */
-    public function testFoo() {
+    public function testBug14747_CompressShouldDoNothingOnCompressedIPs() {
+
         $testip = '2001:503:ba3e::2:30';
         $is = Net_IPv6::compress($testip);
 
-        $this->assertEquals("2001:503:ba3e:0:0:0:2:30", $is);
+        $this->assertEquals("2001:503:ba3e::2:30", $is);
 
-
-        $testip = 'ff01:0:0:0:0:0:0:101';
+        $testip = 'ff01::101';
         $is = Net_IPv6::compress($testip);
 
         $this->assertEquals("ff01::101", $is);
@@ -264,6 +266,20 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
         $testip = "2001:4abc:abcd:0:3744::/120";
         $is = Net_IPv6::uncompress($testip);
         $this->assertEquals( "2001:4abc:abcd:0:3744:0:0:0/120", $is);
+    }
+
+    /**
+    * handle Bug 15947
+    * checkIpv6 returns true although IP is too long
+    */
+    public function testBug15947_IpTooLong() {
+
+        $testIp = '2001:0ec8:0000:0000:0000:0000:0000:0001111';
+
+        $is = Net_IPv6::checkIPv6($testIp);
+
+        $this->assertFalse($is);
+
     }
 
     /**

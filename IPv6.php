@@ -242,7 +242,7 @@ class Net_IPv6
      * @access public
      * @static
      */
-    function isInNetmask($ip, $netmask, $bits=null) 
+    function isInNetmask($ip, $netmask, $bits=null)
     {
         // try to get the bit count
 
@@ -406,7 +406,7 @@ class Net_IPv6
      * @see Compress()
      * @static
      */
-    function uncompress($ip) 
+    function uncompress($ip)
     {
 
         $prefix = Net_IPv6::getPrefixLength($ip);
@@ -529,6 +529,13 @@ class Net_IPv6
      */
     function compress($ip)  
     {
+        
+        if(false !== strpos($ip, '::')) { // its already compressed
+
+            return $ip;
+
+        }
+
         $prefix = Net_IPv6::getPrefixLength($ip);
 
         if (false === $prefix) {
@@ -545,51 +552,45 @@ class Net_IPv6
         $netmask = Net_IPv6::getNetmaskSpec($ip);
         $ip      = Net_IPv6::removeNetmaskSpec($ip);
 
-        if (!strstr($ip, '::')) {
+        $ipp = explode(':', $ip);
 
-            $ipp = explode(':', $ip);
+        for ($i = 0; $i < count($ipp); $i++) {
 
-            for ($i = 0; $i < count($ipp); $i++) {
-
-                $ipp[$i] = dechex(hexdec($ipp[$i]));
-
-            }
-
-            $cip = ':' . join(':', $ipp) . ':';
-
-            preg_match_all("/(:0)+/", $cip, $zeros);
-
-            if (count($zeros[0]) > 0) {
-
-                $match = '';
-
-                foreach ($zeros[0] as $zero) {
-
-                    if (strlen($zero) > strlen($match)) {
-
-                        $match = $zero;
-
-                    }
-                }
-
-                $cip = preg_replace('/' . $match . '/', ':', $cip, 1);
-
-            }
-
-            $cip = preg_replace('/((^:)|(:$))/', '', $cip);
-            $cip = preg_replace('/((^:)|(:$))/', '::', $cip);
-
-            if ('' != $netmask) {
-
-                $cip = $cip.'/'.$netmask;
-
-            }
-
-            return $cip.$prefix;
+            $ipp[$i] = dechex(hexdec($ipp[$i]));
 
         }
 
-        return $ip.$prefix;
+        $cip = ':' . join(':', $ipp) . ':';
+
+        preg_match_all("/(:0)+/", $cip, $zeros);
+
+        if (count($zeros[0]) > 0) {
+
+            $match = '';
+
+            foreach ($zeros[0] as $zero) {
+
+                if (strlen($zero) > strlen($match)) {
+
+                    $match = $zero;
+
+                }
+            }
+
+            $cip = preg_replace('/' . $match . '/', ':', $cip, 1);
+
+        }
+
+        $cip = preg_replace('/((^:)|(:$))/', '', $cip);
+        $cip = preg_replace('/((^:)|(:$))/', '::', $cip);
+
+        if ('' != $netmask) {
+
+            $cip = $cip.'/'.$netmask;
+
+        }
+
+        return $cip.$prefix;
 
     }
 
@@ -665,6 +666,12 @@ class Net_IPv6
             $ipv6 =explode(':', $ipPart[0]);
 
             for ($i = 0; $i < count($ipv6); $i++) {
+
+                if(4 < strlen($ipv6[$i])) {
+                    
+                    return false;
+
+                }
 
                 $dec = hexdec($ipv6[$i]);
                 $hex = strtoupper(preg_replace("/^[0]{1,3}(.*[0-9a-fA-F])$/",
@@ -891,7 +898,7 @@ class Net_IPv6
 
         if (strlen($bin) < 128) {
 
-            $bin = str_pad($str, 128, '0', STR_PAD_LEFT);
+            $bin = str_pad($bin, 128, '0', STR_PAD_LEFT);
 
         }
 

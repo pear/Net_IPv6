@@ -19,10 +19,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2008-10-28</date>
- <time>18:15:09</time>
+ <date>2008-05-18</date>
+ <time>03:08:00</time>
  <version>
-  <release>1.1.0b1</release>
+  <release>1.1.0b2</release>
   <api>1.1.0b1</api>
  </version>
  <stability>
@@ -31,11 +31,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-  Because this release adds a new method and some bug tickets are still open, the package
-  release is named as Beta, instead of releasing a 5th RC version.
-  
-  #14728   add parseAddress(), thanks to Nicholas Williams!
-  #14767   most CS issues should be solved
+  Fixed:
+  #14747  Compressing an already compressed IP returns the IP "as is" now
+  #15947  checkIPv6 returned true although the IP was too long
+  #16220  using the wrong variable in _bin2Ip
  </notes>
  <contents>
   <dir name="/">
@@ -54,18 +53,38 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </dependencies>
  <phprelease />
  <changelog>
-  <version>
-   <release>1.1.0RC4</release>
-   <api>1.1.0RC4</api>
-  </version>
-  <stability>
-   <release>beta</release>
-   <api>beta</api>
-  </stability>
-  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-  <notes>
-   take care of prefix length specification in an address, thanks to Jens Ott
-  </notes>
+  <release>
+   <version>
+    <release>1.1.0b1</release>
+    <api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+    Because this release adds a new method and some bug tickets are still open, the package
+    release is named as Beta, instead of releasing a 5th RC version.
+
+    #14728   add parseAddress(), thanks to Nicholas Williams!
+    #14767   most CS issues should be solved
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC4</release>
+    <api>1.1.0RC4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+    take care of prefix length specification in an address, thanks to Jens Ott
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.1.0RC3</release>
