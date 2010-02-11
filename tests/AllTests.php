@@ -4,7 +4,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 // PHPUnit inlcudes
-require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 
