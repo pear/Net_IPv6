@@ -31,13 +31,18 @@ require_once "PHPUnit/Framework/TestCase.php";
 */
 class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
+    protected $ip;
+
+    public function setUp() {
+        $this->ip = new Net_IPv6();
+    }
 
     /**
      * tests if checkIPv6 can handle prefix length
      */
     public function testCheckIPv6WithPrefix() {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38/60";
-        $is     = Net_IPv6::checkIPv6($testip);
+        $is     = $this->ip->checkIPv6($testip);
 
         $this->assertTrue($is);
     }
@@ -48,7 +53,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testIsInNetmaskNoNetmask() {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "EE80::";
-        $is = Net_IPv6::isInNetmask($testip, $testprefix);
+        $is = $this->ip->isInNetmask($testip, $testprefix);
         $this->assertTrue(PEAR::isError($is));
     }
 
@@ -59,7 +64,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testIsInNetmaskWithBitsAsParameter() {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "FE80::";
-        $is = Net_IPv6::isInNetmask($testip, $testprefix, 16);
+        $is = $this->ip->isInNetmask($testip, $testprefix, 16);
         $this->assertTrue($is);
     }
 
@@ -70,7 +75,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testIsInNetmaskWithBitsInNetmask() {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "FE80::/16";
-        $is = Net_IPv6::isInNetmask($testip, $testprefix);
+        $is = $this->ip->isInNetmask($testip, $testprefix);
         $this->assertTrue($is);
     }
 
@@ -81,7 +86,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testIsInNetmaskWithBitsInIP() {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38/16";
         $testprefix = "FE80::";
-        $is = Net_IPv6::isInNetmask($testip, $testprefix);
+        $is = $this->ip->isInNetmask($testip, $testprefix);
         $this->assertTrue($is);
     }
 
@@ -90,7 +95,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testGetNetmaskTwoParameters() {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
-        $is = Net_IPv6::getNetmask($testip, 16);
+        $is = $this->ip->getNetmask($testip, 16);
         $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
     }
 
@@ -99,7 +104,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testGetNetmaskOneParameter() {
         $testip = "FE80:0:0:FFFF:129:144:52:38/16";
-        $is = Net_IPv6::getNetmask($testip);
+        $is = $this->ip->getNetmask($testip);
         $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
     }
 
@@ -108,7 +113,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testGetAddressTypeLinkLocal() {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
-        $is = Net_IPv6::getAddressType($testip);
+        $is = $this->ip->getAddressType($testip);
         $this->assertEquals( NET_IPV6_LOCAL_LINK, $is);
     }
 
@@ -117,7 +122,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testGetAddressTypeUnassigned() {
         $testip = "E000:0:0:FFFF:129:144:52:38";
-        $is = Net_IPv6::getAddressType($testip);
+        $is = $this->ip->getAddressType($testip);
         $this->assertEquals( NET_IPV6_UNASSIGNED, $is);
     }
 
@@ -133,7 +138,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
                   "0000000101000100".
                   "0000000001010010".
                   "0000000000111000";
-        $is = Net_IPv6::_bin2Ip($testip);
+        $is = $this->ip->_bin2Ip($testip);
         $this->assertEquals( "ffff:0:0:ffff:129:144:52:38", $is);
     }
 
@@ -143,7 +148,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testIp2BinUncompressed() {
         $testip = "ffff:0:0:FFFF:129:144:52:38";
-        $is = Net_IPv6::_ip2Bin($testip);
+        $is = $this->ip->_ip2Bin($testip);
         $this->assertEquals( "1111111111111111".
                              "0000000000000000".
                              "0000000000000000".
@@ -161,7 +166,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      */
     public function testIp2BinCompressed() {
         $testip = "ffff::FFFF:129:144:52:38";
-        $is = Net_IPv6::_ip2Bin($testip);
+        $is = $this->ip->_ip2Bin($testip);
         $this->assertEquals( "1111111111111111".
                              "0000000000000000".
                              "0000000000000000".
@@ -182,7 +187,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testBug4977() {
         $testip = "2001:ec8:1:1:1:1:1:1";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "2001:ec8:1:1:1:1:1:1", $is);
     }
 
@@ -194,7 +199,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testBug3851() {
         $testip = "ffff::FFFF:129.144.52.38";
-        $is = Net_IPv6::uncompress($testip);
+        $is = $this->ip->uncompress($testip);
         $this->assertEquals( "ffff:0:0:0:0:FFFF:129.144.52.38", $is);
     }
 
@@ -206,7 +211,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testBug3405() {
         $testip = "2010:0588:0000:faef:1428:0000:0000:57ab";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "2010:588:0:faef:1428::57ab", $is);
     }
 
@@ -218,12 +223,12 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testBug14747_CompressShouldDoNothingOnCompressedIPs() {
 
         $testip = '2001:503:ba3e::2:30';
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
 
         $this->assertEquals("2001:503:ba3e::2:30", $is);
 
         $testip = 'ff01::101';
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
 
         $this->assertEquals("ff01::101", $is);
     }
@@ -237,7 +242,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testBug2802() {
         $testip = "0000:0000:0000:588:0000:FAEF:1428:57AB";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "::588:0:faef:1428:57ab", $is);
     }
 
@@ -249,7 +254,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testBug2803() {
         $testip = "0:0:0:0588:0:FAEF:1428:57AB";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "::588:0:faef:1428:57ab", $is);
     }
 
@@ -260,11 +265,11 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testBug12442() {
 
         $testip = "2001:4abc:abcd:0000:3744:0000:0000:0000/120";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "2001:4abc:abcd:0:3744::/120", $is);
 
         $testip = "2001:4abc:abcd:0:3744::/120";
-        $is = Net_IPv6::uncompress($testip);
+        $is = $this->ip->uncompress($testip);
         $this->assertEquals( "2001:4abc:abcd:0:3744:0:0:0/120", $is);
     }
 
@@ -276,7 +281,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
         $testIp = '2001:0ec8:0000:0000:0000:0000:0000:0001111';
 
-        $is = Net_IPv6::checkIPv6($testIp);
+        $is = $this->ip->checkIPv6($testIp);
 
         $this->assertFalse($is);
 
@@ -288,7 +293,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testCompress1() {
         $testip = "FF01:0:0:0:0:0:0:101";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "ff01::101", $is);
     }
 
@@ -298,7 +303,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testCompress2() {
         $testip = "0:0:0:0:0:0:0:1";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "::1", $is);
     }
 
@@ -308,7 +313,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testCompress3() {
         $testip = "1:0:0:0:0:0:0:0";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "1::", $is);
     }
 
@@ -318,7 +323,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testCompressWithPrefixLength() {
         $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
-        $is = Net_IPv6::compress($testip);
+        $is = $this->ip->compress($testip);
         $this->assertEquals( "::ffff:5056:5000/116", $is);
     }
 
@@ -329,7 +334,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testUncompress1() {
         $testip = "ff01::101";
-        $is = Net_IPv6::uncompress($testip);
+        $is = $this->ip->uncompress($testip);
         $this->assertEquals( "ff01:0:0:0:0:0:0:101", $is);
     }
 
@@ -339,7 +344,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testUncompress2() {
         $testip = "::1";
-        $is = Net_IPv6::uncompress($testip);
+        $is = $this->ip->uncompress($testip);
         $this->assertEquals( "0:0:0:0:0:0:0:1", $is);
     }
 
@@ -349,7 +354,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testUncompress3() {
         $testip = "1::";
-        $is = Net_IPv6::uncompress($testip);
+        $is = $this->ip->uncompress($testip);
         $this->assertEquals( "1:0:0:0:0:0:0:0", $is);
     }
 
@@ -359,7 +364,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testUncompressWithPrefixLength() {
         $testip = "::ffff:5056:5000/116";
-        $is     = Net_IPv6::uncompress($testip);
+        $is     = $this->ip->uncompress($testip);
 
         $this->assertEquals( "0:0:0:0:0:ffff:5056:5000/116", $is);
     }
@@ -371,7 +376,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     */
     public function testGetPrefixLength() {
         $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
-        $prefix = Net_IPv6::getPrefixLength($testip);
+        $prefix = $this->ip->getPrefixLength($testip);
 
         $this->assertEquals( "116", $prefix);
     }
@@ -383,7 +388,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     public function testRemovePrefixLength() {
         $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
 
-        $ip = Net_IPv6::removePrefixLength($testip);
+        $ip = $this->ip->removePrefixLength($testip);
 
         $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
     }
@@ -392,7 +397,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
         $testip = "2001:502:f3ff::/48";
 
-        $result = Net_IPv6::parseAddress($testip);
+        $result = $this->ip->parseAddress($testip);
 
         $this->assertEquals( "2001:502:f3ff:0:0:0:0:0", $result['start']);
         $this->assertEquals( "2001:502:f3ff:ffff:ffff:ffff:ffff:ffff", $result['end']);
