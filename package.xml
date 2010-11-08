@@ -15,22 +15,21 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2010-02-12</date>
- <time>09:21:58</time>
+ <date>2010-10-08</date>
+ <time>19:15:00</time>
  <version>
-  <release>1.1.0b2</release>
-  <api>1.1.0b1</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
+Jump from beta to stable. 
 Fixed:
-#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
-#15947  checkIPv6 returned true although the IP was too long
-#16220  using the wrong variable in _bin2Ip
+#17819 documentation needs to be updated
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -51,6 +50,23 @@ Fixed:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+  	<release>1.1.0b2</release>
+  	<api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+    <notes>
+Fixed:
+#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
+#15947  checkIPv6 returned true although the IP was too long
+#16220  using the wrong variable in _bin2Ip
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.1.0b1</release>
