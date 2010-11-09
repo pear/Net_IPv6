@@ -109,7 +109,7 @@ define("NET_IPV6_UNKNOWN_TYPE", 1001);
  * @author    Alexander Merz <alexander.merz@web.de>
  * @author    <elfrink at introweb dot nl>
  * @author    Josh Peck <jmp at joshpeck dot org>
- * @copyright 2003-2005 The PHP Group
+ * @copyright 2003-2010 The PHP Group
  * @license   BSD License http://www.opensource.org/licenses/bsd-license.php
  * @version   Release: 1.1.0RC5
  * @link      http://pear.php.net/package/Net_IPv6
@@ -519,7 +519,17 @@ class Net_IPv6
      * Example:  FF01:0:0:0:0:0:0:101   -> FF01::101
      *           0:0:0:0:0:0:0:1        -> ::1
      *
-     * @param String $ip a valid IPv6-adress (hex format)
+     * Whe $ip is an already compressed adress the methode returns the value as is,
+     * also if the adress can be compressed further.
+     *
+     * Example: FF01::0:1 -> FF01::0:1
+     *
+     * To enforce maximum compression, you can set the second argument $force to true.
+     *
+     * Example: FF01::0:1 -> FF01::1 
+     *
+     * @param String  $ip    a valid IPv6-adress (hex format)
+     * @param boolean $force if true the adress will be compresses as best as possible
      *
      * @return tring the compressed IPv6-adress (hex format)
      * @access public
@@ -527,12 +537,20 @@ class Net_IPv6
      * @static
      * @author elfrink at introweb dot nl
      */
-    function compress($ip)  
+    function compress($ip, $force = false)  
     {
         
         if(false !== strpos($ip, '::')) { // its already compressed
 
-            return $ip;
+            if(true == $force) {
+
+                $ip = Net_IPv6::uncompress($ip); 
+
+            } else {
+
+                return $ip;
+
+            }
 
         }
 
@@ -593,6 +611,27 @@ class Net_IPv6
         return $cip.$prefix;
 
     }
+
+    // }}}
+    // {{{ isCompressible()
+
+    /**
+     * Checks, if an IPv6 adress can be compressed
+     *
+     * @param String $ip a valid IPv6 adress
+     * 
+     * @return Boolean true, if adress can be compressed
+     * 
+     * @access public
+     * @static
+     * @author Manuel Schmitt
+     */
+    function isCompressible($ip) 
+    {
+
+        return (bool)($ip != Net_IPv6::compress($address));
+
+    }    
 
     // }}}
     // {{{ SplitV64()
