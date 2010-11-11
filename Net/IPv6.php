@@ -93,6 +93,24 @@ define("NET_IPV6_LOCAL_LINK", 42);
 define("NET_IPV6_LOCAL_SITE", 43);
 
 /**
+ * Address Type: Address range to embedded IPv4 ip in an IPv6 address (RFC 4291, Section 2.5.5)
+ * @see getAddressType()
+ */
+define("NET_IPV6_IPV4MAPPING", 51);
+
+/**
+ * Address Type: Unspecified (RFC 4291, Section 2.5.2)
+ * @see getAddressType()
+ */
+define("NET_IPV6_UNSPECIFIED", 52);
+
+/**
+ * Address Type: Unspecified (RFC 4291, Section 2.5.3)
+ * @see getAddressType()
+ */
+define("NET_IPV6_LOOPBACK", 53);
+
+/**
  * Address Type: address can not assigned to a specific type
  * @see getAddressType()
  */
@@ -298,7 +316,7 @@ class Net_IPv6
     /**
      * Returns the type of an IPv6 address.
      *
-     * RFC 1883, Section 2.3 describes several types of addresses in
+     * RFC 2373, Section 2.3 describes several types of addresses in
      * the IPv6 addresse space.
      * Several addresse types are markers for reserved spaces and as
      * consequence a subject to change.
@@ -320,6 +338,9 @@ class Net_IPv6
      * @see    NET_IPV6_MULTICAST
      * @see    NET_IPV6_LOCAL_LINK
      * @see    NET_IPV6_LOCAL_SITE
+     * @see    NET_IPV6_IPV4MAPPING  
+     * @see    NET_IPV6_UNSPECIFIED  
+     * @see    NET_IPV6_LOOPBACK  
      * @see    NET_IPV6_UNKNOWN_TYPE
      */
     function getAddressType($ip) 
@@ -327,7 +348,19 @@ class Net_IPv6
         $ip    = Net_IPv6::removeNetmaskSpec($ip);
         $binip = Net_IPv6::_ip2Bin($ip);
 
-        if (0 == strncmp('1111111010', $binip, 10)) {
+        if(0 == strncmp(str_repeat('0', 128), $binip, 128)) { // ::/128
+
+            return NET_IPV6_UNSPECIFIED;
+
+        } else if(0 == strncmp(str_repeat('0', 127).'1', $binip, 128)) { // ::/128
+
+            return NET_IPV6_LOOPBACK;
+
+        } else if (0 == strncmp(str_repeat('0', 80).str_repeat('1', 16), $binip, 96)) { // ::ffff/96
+
+            return NET_IPV6_IPV4MAPPING; 
+
+        } else if (0 == strncmp('1111111010', $binip, 10)) {
 
             return NET_IPV6_LOCAL_LINK;
 
@@ -343,7 +376,7 @@ class Net_IPv6
 
             return NET_IPV6_MULTICAST;
 
-        } else if (0 == strncmp('00000000', $binip, 8)) {
+        } else if (0 == strncmp('00000000', $binip, 8)) { 
 
             return NET_IPV6_RESERVED;
 
