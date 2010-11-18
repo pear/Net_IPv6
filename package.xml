@@ -30,6 +30,7 @@
 + New method isCompressible()
 + New method separate()
 + compress() got a second parameter to enforce compression
++ add new address types
 - deprecated getPrefixLength() (technical identical to getNetmaskSpec)
 - deprecated removePrefixLength() (technical identical to removeNetmaskSpec)
  </notes>
