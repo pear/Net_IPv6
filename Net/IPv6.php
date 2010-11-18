@@ -135,10 +135,47 @@ define("NET_IPV6_UNKNOWN_TYPE", 1001);
 class Net_IPv6
 {
 
-    // {{{ removeNetmaskBits()
+    // {{{ separate()
+    /**
+     * Separates an IPv6 address into the address and a prefix length part
+     *
+     * @param String $ip the (compressed) IP as Hex representation
+     *
+     * @return Array the first element is the IP, the second the prefix length
+     * @since  1.2.0
+     * @access public
+     * @static     
+     */
+    function separate($ip) 
+    {
+        
+        $addr = $ip;
+        $spec = '';
+
+        if(false === strrpos($ip, '/')) {
+
+            return array($addr, $spec);
+
+        }
+
+        $elements = explode('/', $ip);
+
+        if(2 == count($elements)) {
+
+            $addr = $elements[0];
+            $spec = $elements[1];
+
+        }
+
+        return array($addr, $spec);
+
+    }
+    // }}}
+
+    // {{{ removeNetmaskSpec()
 
     /**
-     * Removes a possible existing netmask specification at an IP addresse.
+     * Removes a possible existing prefix length/ netmask specification at an IP addresse.
      *
      * @param String $ip the (compressed) IP as Hex representation
      *
@@ -149,25 +186,48 @@ class Net_IPv6
      */
     function removeNetmaskSpec($ip)
     {
-        $addr = $ip;
 
-        if (false !== strpos($ip, '/')) {
+        $elements = Net_IPv6::separate($ip);
 
-            $elements = explode('/', $ip);
+        return $elements[0];
 
-            if (2 == count($elements)) {
+    }
+    // }}}
+    // {{{ removePrefixLength()
 
-                $addr = $elements[0];
+    /**
+     * Tests for a prefix length specification in the address
+     * and removes the prefix length, if exists
+     *
+     * The method is technically identical to removeNetmaskSpec() and 
+     * will be dropped in a future release.
+     *
+     * @param String $ip a valid ipv6 address
+     *
+     * @return String the address without a prefix length
+     * @access public
+     * @static
+     * @see removeNetmaskSpec()
+     * @deprecated
+     */
+    function removePrefixLength($ip)
+    {
+        $pos = strrpos($ip, '/');
 
-            }
+        if (false !== $pos) {
+
+            return substr($ip, 0, $pos);
 
         }
 
-        return $addr;
+        return $ip;
     }
 
+    // }}}
+    // {{{ getNetmaskSpec()
+
     /**
-     * Returns a possible existing netmask specification at an IP addresse.
+     * Returns a possible existing prefix length/netmask specification on an IP addresse.
      *
      * @param String $ip the (compressed) IP as Hex representation
      *
@@ -178,21 +238,43 @@ class Net_IPv6
      */
     function getNetmaskSpec($ip) 
     {
-        $spec = '';
 
-        if (false !== strpos($ip, '/')) {
+        $elements = Net_IPv6::separate($ip);
 
-            $elements = explode('/', $ip);
+        return $elements[1];
 
-            if (2 == count($elements)) {
+    }
 
-                $spec = $elements[1];
+    // }}}
+    // {{{ getPrefixLength()
 
-            }
+    /**
+     * Tests for a prefix length specification in the address
+     * and returns the prefix length, if exists
+     *
+     * The method is technically identical to getNetmaskSpec() and 
+     * will be dropped in a future release.
+     *
+     * @param String $ip a valid ipv6 address
+     *
+     * @return Mixed the prefix as String or false, if no prefix was found
+     * @access public
+     * @static
+     * @deprecated
+     */
+    function getPrefixLength($ip) 
+    {
+        if (preg_match("/^([0-9a-fA-F:]{2,39})\/(\d{1,3})*$/", 
+                        $ip, $matches)) {
+
+            return $matches[2];
+
+        } else {
+
+            return false;
 
         }
 
-        return $spec;
     }
 
     // }}}
@@ -562,7 +644,7 @@ class Net_IPv6
      * Example: FF01::0:1 -> FF01::1 
      *
      * @param String  $ip    a valid IPv6-adress (hex format)
-     * @param boolean $force if true the adress will be compresses as best as possible
+     * @param boolean $force if true the adress will be compresses as best as possible (since 1.2.0)
      *
      * @return tring the compressed IPv6-adress (hex format)
      * @access public
@@ -656,6 +738,7 @@ class Net_IPv6
      * @return Boolean true, if adress can be compressed
      * 
      * @access public
+     * @since 1.2.0b
      * @static
      * @author Manuel Schmitt
      */
@@ -800,60 +883,6 @@ class Net_IPv6
     }
 
     // }}}
-    // {{{ getPrefixLength()
-
-    /**
-     * Tests for a prefix length specification in the address
-     * and returns the prefix length, if exists
-     *
-     * @param String $ip a valid ipv6 address
-     *
-     * @return Mixed the prefix as String or false, if no prefix was found
-     * @access public
-     * @static
-     */
-    function getPrefixLength($ip) 
-    {
-        if (preg_match("/^([0-9a-fA-F:]{2,39})\/(\d{1,3})*$/", 
-                        $ip, $matches)) {
-
-            return $matches[2];
-
-        } else {
-
-            return false;
-
-        }
-
-    }
-
-    // }}}
-    // {{{ removePrefixLength()
-
-    /**
-     * Tests for a prefix length specification in the address
-     * and removes the prefix length, if exists
-     *
-     * @param String $ip a valid ipv6 address
-     *
-     * @return String the address without a prefix length
-     * @access public
-     * @static
-     */
-    function removePrefixLength($ip)
-    {
-        $pos = strrpos($ip, '/');
-
-        if (false !== $pos) {
-
-            return substr($ip, 0, $pos);
-
-        }
-
-        return $ip;
-    }
-
-    // }}}
 
     // {{{ _parseAddress()
 
@@ -883,7 +912,7 @@ class Net_IPv6
         $ip      = null;
         $bitmask = null;
 
-        if ( null == $bits ) {
+        if ( null == $bits ) {  
 
             $elements = explode('/', $ipToParse);
 
