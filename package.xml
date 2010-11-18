@@ -15,25 +15,27 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2010-11-08</date>
- <time>19:15:00</time>
+ <date>2010-11-18</date>
+ <time>03:40:00</time>
  <version>
-  <release>1.1.0</release>
-  <api>1.1.0</api>
+  <release>1.2.0b</release>
+  <api>1.2.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-Jump from beta to stable. 
-Fixed:
-#17819 documentation needs to be updated
++ New method isCompressible()
++ New method separate()
++ compress() got a second parameter to enforce compression
+- deprecated getPrefixLength() (technical identical to getNetmaskSpec)
+- deprecated removePrefixLength() (technical identical to removeNetmaskSpec)
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
-   <file baseinstalldir="Net" md5sum="fd1e829f8e6cbc7aeb8c00fa6e8611f2" name="Net/IPv6.php" role="php" />
+   <file baseinstalldir="Net" md5sum="1885e25e2e04963020fe9706b336b9e1" name="Net/IPv6.php" role="php" />
    <file baseinstalldir="Net" md5sum="62bf24bd1e9d4dc0cfbd25b433026e71" name="tests/AllTests.php" role="test" />
    <file baseinstalldir="Net" md5sum="e41445d637b77150cadf51b0349abb02" name="tests/NetIPv6Test.php" role="test" />
   </dir>
@@ -50,6 +52,24 @@ Fixed:
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <date>2010-11-08</date>
+   <time>19:15:00</time>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Jump from beta to stable. 
+Fixed:
+#17819 documentation needs to be updated
+   </notes>
+  </release>
   <release>
    <version>
   	<release>1.1.0b2</release>
