@@ -30,8 +30,8 @@
 #18085 Fix wrong file path
  </notes>
  <contents>
-  <dir baseinstalldir="Net" name="/">
-   <file baseinstalldir="Net" md5sum="1885e25e2e04963020fe9706b336b9e1" name="IPv6.php" role="php" />
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="1885e25e2e04963020fe9706b336b9e1" name="Net/IPv6.php" role="php" />
    <file baseinstalldir="Net" md5sum="62bf24bd1e9d4dc0cfbd25b433026e71" name="tests/AllTests.php" role="test" />
    <file baseinstalldir="Net" md5sum="e41445d637b77150cadf51b0349abb02" name="tests/NetIPv6Test.php" role="test" />
   </dir>
