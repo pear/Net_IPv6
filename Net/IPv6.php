@@ -515,13 +515,18 @@ class Net_IPv6
      *           ::1        ->  0:0:0:0:0:0:0:1
      *
      * @param String $ip a valid IPv6-adress (hex format)
+     * @param Boolean $leadingZeros if true, leading zeros are added to each 
+     *                              block of the address 
+     *                              (FF01::101  ->  
+     *                               FF01:0000:0000:0000:0000:0000:0000:0101) 
      *
      * @return String the uncompressed IPv6-adress (hex format)
      * @access public
      * @see Compress()
      * @static
+     * @author Pascal Uhlmann
      */
-    function uncompress($ip)
+    function uncompress($ip, $leadingZeros)
     {
 
         $prefix = Net_IPv6::getPrefixLength($ip);
@@ -612,6 +617,21 @@ class Net_IPv6
 
             }
         }
+
+        if(true == $leadingZeros) {
+            
+            $uipT    = array();
+            $uiparts = explode(':', $uip);
+
+            foreach($uiparts as $p) {
+
+                $uipT[] = sprintf('%04s', $p);
+            
+            }
+
+            $uip = implode(':', $uipT);
+        }
+
         if ('' != $netmask) {
 
                 $uip = $uip.'/'.$netmask;
