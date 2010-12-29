@@ -318,6 +318,16 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     }
 
     /**
+    * this testcase handles forced compression
+    *
+    */
+    public function testCompressForced() {
+        $testip = "FF01::0:1";
+        $is = $this->ip->compress($testip, true);
+        $this->assertEquals( "FF01::1", $is);
+    }
+
+    /**
     * this testcase handles compress with a prefix length spec
     *
     */
