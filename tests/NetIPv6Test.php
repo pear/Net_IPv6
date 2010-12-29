@@ -369,6 +369,46 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals( "0:0:0:0:0:ffff:5056:5000/116", $is);
     }
 
+    /**
+    * this testcase handles uncompress adding leading zeros
+    *
+    */
+    public function testUncompress1WithLeadingZeros() {
+        $testip = "ff01::101";
+        $is = $this->ip->uncompress($testip, true);
+        $this->assertEquals( "ff01:0000:0000:0000:0000:0000:0000:0101", $is);
+    }
+
+    /**
+    * this testcase handles uncompress adding leading zeros
+    *
+    */
+    public function testUncompress2WithLeadingZeros() {
+        $testip = "::1";
+        $is = $this->ip->uncompress($testip, true);
+        $this->assertEquals( "0000:0000:0000:0000:0000:0000:0000:0001", $is);
+    }
+
+    /**
+    * this testcase handles uncompress adding leading zeros
+    *
+    */
+    public function testUncompress3WithLeadingZeros() {
+        $testip = "1::";
+        $is = $this->ip->uncompress($testip, true);
+        $this->assertEquals( "0001:0000:0000:0000:0000:0000:0000:0000", $is);
+    }
+
+    /**
+    * this testcase handles uncompress with a prefix length spec adding leading zeros
+    *
+    */
+    public function testUncompressWithPrefixLengthWithLeadingZeros() {
+        $testip = "::ffff:5056:5000/116";
+        $is     = $this->ip->uncompress($testip, true);
+
+        $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000/116", $is);
+    }
 
     /**
     * this testcase handles get Prefix length
