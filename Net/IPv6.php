@@ -526,7 +526,7 @@ class Net_IPv6
      * @static
      * @author Pascal Uhlmann
      */
-    function uncompress($ip, $leadingZeros)
+    function uncompress($ip, $leadingZeros = false)
     {
 
         $prefix = Net_IPv6::getPrefixLength($ip);
