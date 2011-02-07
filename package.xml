@@ -15,20 +15,19 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2010-12-30</date>
- <time>05:30:00</time>
+ <date>2011-02-07</date>
+ <time>22:45:00</time>
  <version>
-  <release>1.2.1RC1</release>
+  <release>1.2.1</release>
   <api>1.2.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-Go to Release Candidate.
-Updated Peardoc to reflect the API changes.
+No Changes. Go to stable.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -49,6 +48,23 @@ Updated Peardoc to reflect the API changes.
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <date>2010-12-30</date>
+   <time>05:30:00</time>
+   <version>
+    <release>1.2.1RC1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Go to Release Candidate.
+Updated Peardoc to reflect the API changes.
+   </notes>
+  </release>
   <release>
    <date>2010-12-22</date>
    <time>02:10:00</time>
