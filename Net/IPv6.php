@@ -748,6 +748,33 @@ class Net_IPv6
     }
 
     // }}}
+    // {{{ recommendedFormat()
+    /**
+     * Represent IPv6 address in RFC5952 format.
+     *
+     * @param String  $ip a valid IPv6-adress (hex format)
+     *
+     * @return String the recommended representation of IPv6-adress (hex format)
+     * @access public
+     * @see    compress()
+     * @static
+     * @author koyama at hoge dot org
+     * @todo This method may become a part of compress() in a further releases
+     */
+    function recommendedFormat($ip)
+    {
+        $compressed = self::compress($ip, true);
+        // RFC5952 4.2.2
+        // The symbol "::" MUST NOT be used to shorten just one
+        // 16-bit 0 field.
+        if ((substr_count($compressed, ':') == 7) &&
+            (strpos($compressed, '::') !== false)) {
+            $compressed = str_replace('::', ':0:', $compressed);
+        }
+        return $compressed;
+    }
+    // }}}
+
     // {{{ isCompressible()
 
     /**

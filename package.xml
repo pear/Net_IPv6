@@ -15,19 +15,20 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2011-02-07</date>
- <time>22:45:00</time>
+ <date>2011-08-09</date>
+ <time>00:17:00</time>
  <version>
-  <release>1.2.1</release>
-  <api>1.2.0</api>
+  <release>1.2.2</release>
+  <api>1.2.2</api>
  </version>
  <stability>
   <release>stable</release>
-  <api>stable</api>
+  <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-No Changes. Go to stable.
+#18687 Add recommendedFormat() provided by Tetsuji Koyama to respect RFC5952 about shortening of 0-Byte segments.
+The method may become a part of compress() in a stable release.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -48,6 +49,22 @@ No Changes. Go to stable.
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <date>2011-02-07</date>
+   <time>22:45:00</time>
+   <version>
+    <release>1.2.1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+No Changes. Go to stable.
+   </notes>
+  </release>
   <release>
    <date>2010-12-30</date>
    <time>05:30:00</time>
