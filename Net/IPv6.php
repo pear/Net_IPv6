@@ -858,14 +858,22 @@ class Net_IPv6
      */
     function checkIPv6($ip)
     {
-        $ip = Net_IPv6::removePrefixLength($ip);
-        $ip = Net_IPv6::removeNetmaskSpec($ip);
+
+        $elements = Net_IPv6::separate($ip);
+    
+        $ip = $elements[0];
+
+        if('' != $elements[1] && ( !is_numeric($elements[1]) || 0 > $elements || 128 < $elements[1])) {
+
+            return false;
+
+        } 
 
         $ipPart = Net_IPv6::SplitV64($ip);
         $count  = 0;
 
         if (!empty($ipPart[0])) {
-            $ipv6 =explode(':', $ipPart[0]);
+            $ipv6 = explode(':', $ipPart[0]);
 
             for ($i = 0; $i < count($ipv6); $i++) {
 
