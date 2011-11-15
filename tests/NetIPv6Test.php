@@ -287,6 +287,20 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
 
     }
 
+	/**
+    * handle Bug 18976
+    * checkIPv6 did not check the value of the netmask 
+    */
+	public function testBug18976_NetmaskValueOutOfRange() {
+
+		$testIp = '2002::/129';
+		
+		$is = $this->ip->checkIPv6($testIp);
+
+		$this->assertFalse($is);
+
+	}
+
     /**
     * this testcase handles compress
     *
