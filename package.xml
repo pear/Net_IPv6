@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Net_IPv6</name>
+ <channel>pear.php.net</channel>
+ <summary>Check and validate IPv6 addresses</summary>
+ <description>The class allows you to:
+* check if an address is an IPv6 address
+* compress/uncompress IPv6 addresses
+* check for an IPv4 compatible ending in an IPv6 address
+* check the assigned address space of an IPv6 address
+* do netmask calculations</description>
+ <lead>
+  <name>Alexander Merz</name>
+  <user>alexmerz</user>
+  <email>alexander.merz@web.de</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-11-15</date>
+ <time>01:50:00</time>
+ <version>
+  <release>1.2.2b</release>
+  <api>1.2.2</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+ <notes>
+#18687 Add recommendedFormat() provided by Tetsuji Koyama to respect RFC5952 about shortening of 0-Byte segments.
+The method may become a part of compress() in a stable release.
+#18976 Rok Potocnik spotted a missing range check for the netmask value while checking an IPv6 address.
+ </notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="e27f6754251faa2ab95eadc8da185845" name="Net/IPv6.php" role="php" />
+   <file baseinstalldir="Net" md5sum="62bf24bd1e9d4dc0cfbd25b433026e71" name="tests/AllTests.php" role="test" />
+   <file baseinstalldir="Net" md5sum="8d48342474dfa8be7859300e7b3df212" name="tests/NetIPv6Test.php" role="test" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <date>2011-02-07</date>
+   <time>22:45:00</time>
+   <version>
+    <release>1.2.1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+No Changes. Go to stable.
+   </notes>
+  </release>
+  <release>
+   <date>2010-12-30</date>
+   <time>05:30:00</time>
+   <version>
+    <release>1.2.1RC1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Go to Release Candidate.
+Updated Peardoc to reflect the API changes.
+   </notes>
+  </release>
+  <release>
+   <date>2010-12-22</date>
+   <time>02:10:00</time>
+   <version>
+    <release>1.2.1b1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Feature request:
++ add parameter to uncompress() to add leading zeros to an address (Pascal Uhlmann)
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-25</date>
+   <time>14:30:00</time>
+   <version>
+    <release>1.2.1b</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+#18085 Fix wrong file path
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-18</date>
+   <time>03:40:00</time>
+   <version>
+    <release>1.2.0b</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
++ New method isCompressible()
++ New method separate()
++ compress() got a second parameter to enforce compression
++ add new address types
+- deprecated getPrefixLength() (technical identical to getNetmaskSpec)
+- deprecated removePrefixLength() (technical identical to removeNetmaskSpec)
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-08</date>
+   <time>19:15:00</time>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Jump from beta to stable. 
+Fixed:
+#17819 documentation needs to be updated
+   </notes>
+  </release>
+  <release>
+   <version>
+  	<release>1.1.0b2</release>
+  	<api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+    <notes>
+Fixed:
+#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
+#15947  checkIPv6 returned true although the IP was too long
+#16220  using the wrong variable in _bin2Ip
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0b1</release>
+    <api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Because this release adds a new method and some bug tickets are still open, the package
+release is named as Beta, instead of releasing a 5th RC version.
+
+#14728   add parseAddress(), thanks to Nicholas Williams!
+#14767   most CS issues should be solved
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC3</release>
+    <api>1.1.0RC3</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Fix Bug #12442, thanks to pear at erikdebruijn dot nl
+   + add getNetmaskSpec()
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC4</release>
+    <api>1.1.0RC4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+take care of prefix length specification in an address, thanks to Jens Ott
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0</release>
+    <api>1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2004-03-02</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+First official release
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2004-11-24</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+rewrite compress()/uncompress
+fixes this bugs:
+Bug #2803  	compress() adds colon
+Bug #2802  	compress() doesn&apos;t compress correctly
+Thanks to cmoehrke at netviser dot de
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-02-13</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Bug #3404: checkIPv6() is case sensitive
+Bug #3405: compress() does not compress &apos;0000&apos;
+Thanks to elfrink at introweb dot nl
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.3</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-03-19</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Bug #3851: IPv4-mapped/compatible IPv6 uncompress bug
+Thanks to dtaylor at jasi dot com
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.4</release>
+    <api>1.0.4</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-08-03</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Bug #4977: trying to compress where nothing is to compress
+Thanks to pvenegas at gmail dot com
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.5</release>
+    <api>1.0.5</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-09-01</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Bug #3405 again: problem with compressing
+Thanks to elfrink at introweb dot nl
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC1</release>
+    <api>1.1.0RC1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-11-24</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+This new minor version adds some methods proposed
+by Josh Peck (jmp @ joshpeck dot org).
++ Change license to BSD
++ Improved comments and docblocks
++ add removeNetmaskSpec()
++ add getNetmask()
++ add isInNetmask()
++ add getAddressType()
++ add _ip2Bin()
++ add _bin2Ip()
++ add serveral constants for address types
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC2</release>
+    <api>1.1.0RC2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2006-02-09</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+- fixed a notice, when removeNetmaskSpec is used on an IP
+without a netmask
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0b2</release>
+    <api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-02-12</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Fixed:
+#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
+#15947  checkIPv6 returned true although the IP was too long
+#16220  using the wrong variable in _bin2Ip
+   </notes>
+  </release>
+ </changelog>
+</package>
