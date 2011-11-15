@@ -15,26 +15,27 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2011-08-09</date>
- <time>00:17:00</time>
+ <date>2011-11-15</date>
+ <time>01:50:00</time>
  <version>
-  <release>1.2.2</release>
+  <release>1.2.2b</release>
   <api>1.2.2</api>
  </version>
  <stability>
-  <release>stable</release>
+  <release>beta</release>
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
 #18687 Add recommendedFormat() provided by Tetsuji Koyama to respect RFC5952 about shortening of 0-Byte segments.
 The method may become a part of compress() in a stable release.
+#18976 Rok Potocnik spotted a missing range check for the netmask value while checking an IPv6 address.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="5f80432e717f07e652eaeac38d9ffa15" name="Net/IPv6.php" role="php" />
+   <file baseinstalldir="/" md5sum="e27f6754251faa2ab95eadc8da185845" name="Net/IPv6.php" role="php" />
    <file baseinstalldir="Net" md5sum="62bf24bd1e9d4dc0cfbd25b433026e71" name="tests/AllTests.php" role="test" />
-   <file baseinstalldir="Net" md5sum="6110be4ce383e5dba080ba845c13b1af" name="tests/NetIPv6Test.php" role="test" />
+   <file baseinstalldir="Net" md5sum="8d48342474dfa8be7859300e7b3df212" name="tests/NetIPv6Test.php" role="test" />
   </dir>
  </contents>
  <dependencies>
