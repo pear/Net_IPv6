@@ -715,7 +715,7 @@ class Net_IPv6
 
         $cip = ':' . join(':', $ipp) . ':';
 
-        preg_match_all("/(:0)+/", $cip, $zeros);
+        preg_match_all("/(:0)(:0)+/", $cip, $zeros);
 
         if (count($zeros[0]) > 0) {
 
