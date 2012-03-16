@@ -178,6 +178,16 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
                              ,$is);
     }
 
+    /**
+     * this testcase handles Bug 19334
+	 * CheckIpv6 returned true because of an invalid check
+     * non-valid chars
+     *
+     */
+    public function testBug19334() {
+        $testip = "fe80::16da:e9ff:fe0f:6dd4/64:48866";
+        $this->assertFalse($this->ip->checkIPv6($testip));
+    }
 
     /**
     * this testcase handles Bug 4977
