@@ -611,7 +611,7 @@ class Net_IPv6
 
             } else {                          // xxx::xxx
 
-                $fill = str_repeat(':0:', 6-$c2-$c1);
+                $fill = str_repeat(':0:', max(1, 6-$c2-$c1));
                 $uip  = str_replace('::', $fill, $uip);
                 $uip  = str_replace('::', ':', $uip);
 
