@@ -514,7 +514,14 @@ class Net_IPv6
      * Example:  FF01::101  ->  FF01:0:0:0:0:0:0:101
      *           ::1        ->  0:0:0:0:0:0:0:1
      *
-     * @param String $ip a valid IPv6-address (hex format)
+     * Note: You can also pass an invalid IPv6 address (usually as part of the process
+     * of validation by checkIPv6, which will validate the return string).
+     * This function will insert the "0" between "::" even if this results in too many
+     * numbers in total. It is NOT the purpose of this function to validate your input.
+     *
+     * Example of calling with invalid input: 1::2:3:4:5:6:7:8:9 -> 1:0:2:3:4:5:6:7:8:9
+     *
+     * @param String $ip a (possibly) valid IPv6-address (hex format)
      * @param Boolean $leadingZeros if true, leading zeros are added to each 
      *                              block of the address 
      *                              (FF01::101  ->  
@@ -611,7 +618,7 @@ class Net_IPv6
 
             } else {                          // xxx::xxx
 
-                $fill = str_repeat(':0:', 6-$c2-$c1);
+                $fill = str_repeat(':0:', max(1, 6-$c2-$c1));
                 $uip  = str_replace('::', $fill, $uip);
                 $uip  = str_replace('::', ':', $uip);
 
