@@ -1,0 +1,31 @@
+{
+    "authors": [
+        {
+            "email": "alexander.merz@web.de",
+            "name": "Alexander Merz",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Net_IPv6": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Net_IPv6",
+    "include-path": [
+        "./"
+    ],
+    "license": "BSD",
+    "name": "pear/net_ipv6",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_IPv6",
+        "source": "https://github.com/pear/Net_IPv6"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
