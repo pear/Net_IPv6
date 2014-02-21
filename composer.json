@@ -15,7 +15,7 @@
     "include-path": [
         "./"
     ],
-    "license": "BSD",
+    "license": "BSD-2-Clause",
     "name": "pear/net_ipv6",
     "support": {
         "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_IPv6",
@@ -23,7 +23,7 @@
     },
     "type": "library",
     "require": {
-        "pear/pear_exception": "*"
+        "pear/pear": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
