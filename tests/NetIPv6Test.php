@@ -22,25 +22,29 @@ require_once "Net/IPv6.php";
 require_once "PHPUnit/Framework/TestCase.php";
 
 /**
-* This testcases tests for several bugs and general topics
-*
-* @author  Alexander Merz <alexander.merz@t-online.de>
-* @package Net_IPv6
-* @version $Id$
-* @access  public
-*/
-class NetIPv6Test extends PHPUnit_Framework_TestCase {
+ * This testcases for general topics
+ *
+ * @package Net_IPv6
+ * @author  Alexander Merz <alexander.merz@t-online.de>
+ * @version GIT: <git_id>
+ */
+class NetIPv6Test extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @var Net_IPv6
+     */
+    private $ip;
 
-    protected $ip;
-
-    public function setUp() {
+    protected function setUp()
+    {
         $this->ip = new Net_IPv6();
     }
 
     /**
      * tests if checkIPv6 can handle prefix length
      */
-    public function testCheckIPv6WithPrefix() {
+    public function testCheckIPv6WithPrefix()
+    {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38/60";
         $is     = $this->ip->checkIPv6($testip);
 
@@ -50,7 +54,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * tests isInNetmask() with no netmask length given
      */
-    public function testIsInNetmaskNoNetmask() {
+    public function testIsInNetmaskNoNetmask()
+    {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "EE80::";
         $is = $this->ip->isInNetmask($testip, $testprefix);
@@ -61,7 +66,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      * tests isInNetmask() with the netmask length in
      * the third parameter
      */
-    public function testIsInNetmaskWithBitsAsParameter() {
+    public function testIsInNetmaskWithBitsAsParameter()
+    {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "FE80::";
         $is = $this->ip->isInNetmask($testip, $testprefix, 16);
@@ -72,7 +78,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      * tests isInNetmask() with the netmask length in
      * the second parameter
      */
-    public function testIsInNetmaskWithBitsInNetmask() {
+    public function testIsInNetmaskWithBitsInNetmask()
+    {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38";
         $testprefix = "FE80::/16";
         $is = $this->ip->isInNetmask($testip, $testprefix);
@@ -83,7 +90,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
      * tests isInNetmask() with the netmask length in
      * the first parameter
      */
-    public function testIsInNetmaskWithBitsInIP() {
+    public function testIsInNetmaskWithBitsInIP()
+    {
         $testip = "FE80:FFFF:0:FFFF:129:144:52:38/16";
         $testprefix = "FE80::";
         $is = $this->ip->isInNetmask($testip, $testprefix);
@@ -93,7 +101,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * tests getNetmask with two parameters
      */
-    public function testGetNetmaskTwoParameters() {
+    public function testGetNetmaskTwoParameters()
+    {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getNetmask($testip, 16);
         $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
@@ -102,7 +111,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * tests getNetmask with one parameter
      */
-    public function testGetNetmaskOneParameter() {
+    public function testGetNetmaskOneParameter()
+    {
         $testip = "FE80:0:0:FFFF:129:144:52:38/16";
         $is = $this->ip->getNetmask($testip);
         $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
@@ -111,7 +121,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * test getAddressType - Link Local
      */
-    public function testGetAddressTypeLinkLocal() {
+    public function testGetAddressTypeLinkLocal()
+    {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getAddressType($testip);
         $this->assertEquals( NET_IPV6_LOCAL_LINK, $is);
@@ -120,7 +131,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * test getAddressType - Unassigned
      */
-    public function testGetAddressTypeUnassigned() {
+    public function testGetAddressTypeUnassigned()
+    {
         $testip = "E000:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getAddressType($testip);
         $this->assertEquals( NET_IPV6_UNASSIGNED, $is);
@@ -129,7 +141,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * test the Bin2Ip method
      */
-    public function testBin2Ip() {
+    public function testBin2Ip()
+    {
         $testip = "1111111111111111".
                   "0000000000000000".
                   "0000000000000000".
@@ -146,7 +159,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * test the IP2Bin method with an uncompressed ip
      */
-    public function testIp2BinUncompressed() {
+    public function testIp2BinUncompressed()
+    {
         $testip = "ffff:0:0:FFFF:129:144:52:38";
         $is = $this->ip->_ip2Bin($testip);
         $this->assertEquals( "1111111111111111".
@@ -164,7 +178,8 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     /**
      * test the IP2Bin method with a compressed ip
      */
-    public function testIp2BinCompressed() {
+    public function testIp2BinCompressed()
+    {
         $testip = "ffff::FFFF:129:144:52:38";
         $is = $this->ip->_ip2Bin($testip);
         $this->assertEquals( "1111111111111111".
@@ -288,36 +303,36 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
     }
 
     /**
-    * this testcase handles get Prefix length
-    *
-    */
-    public function testGetPrefixLength() {
+     * this testcase handles get Prefix length
+     */
+    public function testGetPrefixLength()
+    {
         $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
         $prefix = $this->ip->getPrefixLength($testip);
 
-        $this->assertEquals( "116", $prefix);
+        $this->assertEquals("116", $prefix);
     }
 
     /**
-    * this testcase handles remove a Prefix length
-    *
-    */
-    public function testRemovePrefixLength() {
+     * this testcase handles remove a Prefix length
+     */
+    public function testRemovePrefixLength()
+    {
         $testip = "0000:0000:0000:0000:0000:ffff:5056:5000/116";
 
         $ip = $this->ip->removePrefixLength($testip);
 
-        $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
+        $this->assertEquals("0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
     }
 
-    public function testParseAddress() {
-
+    public function testParseAddress()
+    {
         $testip = "2001:502:f3ff::/48";
 
         $result = $this->ip->parseAddress($testip);
 
-        $this->assertEquals( "2001:502:f3ff:0:0:0:0:0", $result['start']);
-        $this->assertEquals( "2001:502:f3ff:ffff:ffff:ffff:ffff:ffff", $result['end']);
+        $this->assertEquals("2001:502:f3ff:0:0:0:0:0", $result['start']);
+        $this->assertEquals("2001:502:f3ff:ffff:ffff:ffff:ffff:ffff", $result['end']);
 
     }
 
