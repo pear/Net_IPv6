@@ -219,87 +219,36 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase
         $this->assertEquals( "::ffff:5056:5000/116", $is);
     }
 
+    public static function uncompressProvider()
+    {
+        return array(
+            array("ff01::101", "ff01:0:0:0:0:0:0:101", false),
+            array("::1", "0:0:0:0:0:0:0:1", false),
+            array("1::", "1:0:0:0:0:0:0:0", false),
+            // with prefix length spec
+            array("::ffff:5056:5000/116", "0:0:0:0:0:ffff:5056:5000/116", false),
 
-    /**
-    * this testcase handles uncompress
-    *
-    */
-    public function testUncompress1() {
-        $testip = "ff01::101";
-        $is = $this->ip->uncompress($testip);
-        $this->assertEquals( "ff01:0:0:0:0:0:0:101", $is);
+            // leading zeros
+            array("ff01::101", "ff01:0000:0000:0000:0000:0000:0000:0101", true),
+            array("::1", "0000:0000:0000:0000:0000:0000:0000:0001", true),
+            array("1::", "0001:0000:0000:0000:0000:0000:0000:0000", true),
+            array("::ffff:5056:5000/116", "0000:0000:0000:0000:0000:ffff:5056:5000/116", true)
+        );
     }
 
     /**
-    * this testcase handles uncompress
-    *
-    */
-    public function testUncompress2() {
-        $testip = "::1";
-        $is = $this->ip->uncompress($testip);
-        $this->assertEquals( "0:0:0:0:0:0:0:1", $is);
-    }
-
-    /**
-    * this testcase handles uncompress
-    *
-    */
-    public function testUncompress3() {
-        $testip = "1::";
-        $is = $this->ip->uncompress($testip);
-        $this->assertEquals( "1:0:0:0:0:0:0:0", $is);
-    }
-
-    /**
-    * this testcase handles uncompress with a prefix length spec
-    *
-    */
-    public function testUncompressWithPrefixLength() {
-        $testip = "::ffff:5056:5000/116";
-        $is     = $this->ip->uncompress($testip);
-
-        $this->assertEquals( "0:0:0:0:0:ffff:5056:5000/116", $is);
-    }
-
-    /**
-    * this testcase handles uncompress adding leading zeros
-    *
-    */
-    public function testUncompress1WithLeadingZeros() {
-        $testip = "ff01::101";
-        $is = $this->ip->uncompress($testip, true);
-        $this->assertEquals( "ff01:0000:0000:0000:0000:0000:0000:0101", $is);
-    }
-
-    /**
-    * this testcase handles uncompress adding leading zeros
-    *
-    */
-    public function testUncompress2WithLeadingZeros() {
-        $testip = "::1";
-        $is = $this->ip->uncompress($testip, true);
-        $this->assertEquals( "0000:0000:0000:0000:0000:0000:0000:0001", $is);
-    }
-
-    /**
-    * this testcase handles uncompress adding leading zeros
-    *
-    */
-    public function testUncompress3WithLeadingZeros() {
-        $testip = "1::";
-        $is = $this->ip->uncompress($testip, true);
-        $this->assertEquals( "0001:0000:0000:0000:0000:0000:0000:0000", $is);
-    }
-
-    /**
-    * this testcase handles uncompress with a prefix length spec adding leading zeros
-    *
-    */
-    public function testUncompressWithPrefixLengthWithLeadingZeros() {
-        $testip = "::ffff:5056:5000/116";
-        $is     = $this->ip->uncompress($testip, true);
-
-        $this->assertEquals( "0000:0000:0000:0000:0000:ffff:5056:5000/116", $is);
+     * this testcase handles uncompress
+     *
+     * @param string  $testip
+     * @param string  $expectation
+     * @param boolean $leadingZeros
+     *
+     * @dataProvider uncompressProvider
+     */
+    public function testUncompress($testip, $expectation, $leadingZeros)
+    {
+        $is = $this->ip->uncompress($testip, $leadingZeros);
+        $this->assertEquals($expectation, $is);
     }
 
     /**
