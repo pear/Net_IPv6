@@ -1,0 +1,5 @@
+<phpunit convertErrorsToExceptions="false">
+    <testsuite>
+        <directory>./tests</directory>
+    </testsuite>
+</phpunit>
