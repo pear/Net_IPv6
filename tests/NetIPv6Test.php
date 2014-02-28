@@ -178,57 +178,25 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase {
                              ,$is);
     }
 
+    public static function compressProvider()
+    {
+        return array(
+            array("FF01:0:0:0:0:0:0:101", "ff01::101"),
+            array("0:0:0:0:0:0:0:1", "::1"),
+            array("1:0:0:0:0:0:0:0", "1::"),
+            array("FF01::0:1", "ff01::1"),
+            // with prefix length spec
+            array("0000:0000:0000:0000:0000:ffff:5056:5000/116", "::ffff:5056:5000/116"),
+        );
+    }
+
     /**
-     * this testcase handles Bug 19334
-	 * CheckIpv6 returned true because of an invalid check
-     * non-valid chars
+     * this testcase handles compress
      *
-     */
-    public function testBug19334() {
-        $testip = "fe80::16da:e9ff:fe0f:6dd4/64:48866";
-        $this->assertFalse($this->ip->checkIPv6($testip));
-    }
-
-    /**
-    * this testcase handles Bug 4977
-    * which covers the problem with wrong compressing where nothing is to
-    * compress and zeros are replaced by ':'
-    *
-    */
-    public function testBug4977() {
-        $testip = "2001:ec8:1:1:1:1:1:1";
-        $is = $this->ip->compress($testip);
-        $this->assertEquals( "2001:ec8:1:1:1:1:1:1", $is);
-    }
-
-    /**
-    * this testcase handles Bug 3851
-    * which covers the problem with uncompressing with an IPv4 part
-    * in the ip
-    *
-    */
-    public function testBug3851() {
-        $testip = "ffff::FFFF:129.144.52.38";
-        $is = $this->ip->uncompress($testip);
-        $this->assertEquals( "ffff:0:0:0:0:FFFF:129.144.52.38", $is);
-    }
-
-    /**
-    * this testcase handles Bug 3405
-    * which covers the problem with compressing 0000
-    * in the ip
-    *
-    */
-    public function testBug3405() {
-        $testip = "2010:0588:0000:faef:1428:0000:0000:57ab";
-        $is = $this->ip->compress($testip);
-        $this->assertEquals( "2010:588:0:faef:1428::57ab", $is);
-    }
-
-    /**
-     * this testcase handles Bug 14747
-     * which covers already compressed adresses
-     * to keep as is
+     * @param string $testip
+     * @param string $expectation
+     *
+     * @dataProvider compressProvider
      */
     public function testBug14747_CompressShouldDoNothingOnCompressedIPs() {
 
