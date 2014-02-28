@@ -216,7 +216,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase
     public function testCompress($testip, $expectation)
     {
         $is = $this->ip->compress($testip);
-        $this->assertEquals( "::ffff:5056:5000/116", $is);
+        $this->assertEquals($expectation, $is);
     }
 
     public static function uncompressProvider()
