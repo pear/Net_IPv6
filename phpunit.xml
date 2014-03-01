@@ -1,5 +1,7 @@
-<phpunit convertErrorsToExceptions="false">
-    <testsuite>
-        <directory>./tests</directory>
-    </testsuite>
+<phpunit bootstrap="./tests/TestInit.php" colors="true" convertErrorsToExceptions="false">
+    <testsuites>
+        <testsuite name="Net_Ipv6_Test">
+            <directory>./tests/Net/Ipv6/Test</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

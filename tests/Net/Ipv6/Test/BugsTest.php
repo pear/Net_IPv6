@@ -24,7 +24,7 @@ require_once 'BaseTest.php';
  * @license  BSD-2-Clause
  * @version  Release: @package_version@
  */
-class BugsTest extends BaseTest
+class Net_Ipv6_Test_BugsTest extends Net_Ipv6_Test_BaseTest
 {
     /**
      * this testcase handles Bug 19334

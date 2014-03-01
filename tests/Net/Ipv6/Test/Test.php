@@ -28,7 +28,7 @@ require_once 'BaseTest.php';
  * @author  Alexander Merz <alexander.merz@t-online.de>
  * @version Release: @package_version@
  */
-class NetIPv6Test extends BaseTest
+class Net_IPv6_Test_Test extends Net_Ipv6_Test_BaseTest
 {
     /**
      * tests if checkIPv6 can handle prefix length

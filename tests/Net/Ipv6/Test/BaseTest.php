@@ -3,7 +3,7 @@
 require_once "Net/IPv6.php";
 require_once "PHPUnit/Framework/TestCase.php";
 
-abstract class BaseTest extends PHPUnit_Framework_TestCase
+abstract class Net_Ipv6_Test_BaseTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Net_IPv6

@@ -8,7 +8,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "Net": "./"
+            "Net_IPv6": "./",
+            "Net_IPv6_Test": "./tests"
         }
     },
     "description": "More info available on: http://pear.php.net/package/Net_IPv6",
