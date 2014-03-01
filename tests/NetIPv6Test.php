@@ -219,14 +219,15 @@ class NetIPv6Test extends BaseTest
     public static function compressProvider()
     {
         return array(
-            array("FF01:0:0:0:0:0:0:101", "ff01::101"),
-            array("0:0:0:0:0:0:0:1", "::1"),
-            array("1:0:0:0:0:0:0:0", "1::"),
-            array("FF01::0:1", "ff01::1"),
+            array("FF01:0:0:0:0:0:0:101", "ff01::101", false),
+            array("0:0:0:0:0:0:0:1", "::1", false),
+            array("1:0:0:0:0:0:0:0", "1::", false),
+            array("FF01::0:1", "ff01::1", true),
             // with prefix length spec
             array(
                 "0000:0000:0000:0000:0000:ffff:5056:5000/116",
-                "::ffff:5056:5000/116"
+                "::ffff:5056:5000/116",
+                false
             ),
         );
     }
@@ -234,15 +235,16 @@ class NetIPv6Test extends BaseTest
     /**
      * this testcase handles compress
      *
-     * @param string $testip      The IP to compress.
-     * @param string $expectation The expected value.
+     * @param string  $testip      The IP to compress.
+     * @param string  $expectation The expected value.
+     * @param boolean $force       Force compression.
      *
      * @return void
      * @dataProvider compressProvider
      */
-    public function testCompress($testip, $expectation)
+    public function testCompress($testip, $expectation, $force)
     {
-        $is = $this->ip->compress($testip);
+        $is = $this->ip->compress($testip, $force);
         $this->assertEquals($expectation, $is);
     }
 
