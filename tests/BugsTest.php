@@ -1,6 +1,18 @@
 <?php
-require_once "Net/IPv6.php";
-require_once "PHPUnit/Framework/TestCase.php";
+/**
+ * Test case for bugs reported/fixed.
+ *
+ * PHP Version 5
+ *
+ * @category Testing
+ * @package  Net_IPv6
+ * @author   Till Klampaeckel <till@php.net>
+ * @license  BSD-2-Clause
+ * @version  GIT: <git_id>
+ * @link     http://pear.php.net/package/Net_IPv6
+ */
+
+require_once 'BaseTest.php';
 
 /**
  * This testcases tests for several bugs and general topics
@@ -10,18 +22,8 @@ require_once "PHPUnit/Framework/TestCase.php";
  * @author  Phil Davis
  * @version GIT: <git_id>
  */
-class BugsTest extends PHPUnit_Framework_TestCase
+class BugsTest extends BaseTest
 {
-    /**
-     * @var Net_IPv6
-     */
-    private $ip;
-
-    protected function setUp()
-    {
-        $this->ip = new Net_IPv6();
-    }
-
     /**
      * this testcase handles Bug 19334
      * CheckIpv6 returned true because of an invalid check

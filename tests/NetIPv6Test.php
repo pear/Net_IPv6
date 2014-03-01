@@ -18,8 +18,7 @@
 //
 // $Id$
 
-require_once "Net/IPv6.php";
-require_once "PHPUnit/Framework/TestCase.php";
+require_once 'BaseTest.php';
 
 /**
  * This testcases for general topics
@@ -28,18 +27,8 @@ require_once "PHPUnit/Framework/TestCase.php";
  * @author  Alexander Merz <alexander.merz@t-online.de>
  * @version GIT: <git_id>
  */
-class NetIPv6Test extends PHPUnit_Framework_TestCase
+class NetIPv6Test extends BaseTest
 {
-    /**
-     * @var Net_IPv6
-     */
-    private $ip;
-
-    protected function setUp()
-    {
-        $this->ip = new Net_IPv6();
-    }
-
     /**
      * tests if checkIPv6 can handle prefix length
      */
