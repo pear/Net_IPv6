@@ -1,22 +1,23 @@
 <?php
-//
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Alexander Merz <alexander.merz@web.de>				  |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+/**
+ * +----------------------------------------------------------------------+
+ * | PHP Version 4                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1997-2003 The PHP Group                                |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the PHP license,       |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available at through the world-wide-web at                           |
+ * | http://www.php.net/license/2_02.txt.                                 |
+ * | If you did not receive a copy of the PHP license and are unable to   |
+ * | obtain it through the world-wide-web, please send a note to          |
+ * | license@php.net so we can mail you a copy immediately.               |
+ * +----------------------------------------------------------------------+
+ * | Authors: Alexander Merz <alexander.merz@web.de>                      |
+ * +----------------------------------------------------------------------+
+ *
+ * PHP Version 5
+ */
 
 require_once 'BaseTest.php';
 
@@ -25,12 +26,14 @@ require_once 'BaseTest.php';
  *
  * @package Net_IPv6
  * @author  Alexander Merz <alexander.merz@t-online.de>
- * @version GIT: <git_id>
+ * @version Release: @package_version@
  */
 class NetIPv6Test extends BaseTest
 {
     /**
      * tests if checkIPv6 can handle prefix length
+     *
+     * @return void
      */
     public function testCheckIPv6WithPrefix()
     {
@@ -42,6 +45,8 @@ class NetIPv6Test extends BaseTest
 
     /**
      * tests isInNetmask() with no netmask length given
+     *
+     * @return void
      */
     public function testIsInNetmaskNoNetmask()
     {
@@ -54,6 +59,8 @@ class NetIPv6Test extends BaseTest
     /**
      * tests isInNetmask() with the netmask length in
      * the third parameter
+     *
+     * @return void
      */
     public function testIsInNetmaskWithBitsAsParameter()
     {
@@ -66,6 +73,8 @@ class NetIPv6Test extends BaseTest
     /**
      * tests isInNetmask() with the netmask length in
      * the second parameter
+     *
+     * @return void
      */
     public function testIsInNetmaskWithBitsInNetmask()
     {
@@ -78,6 +87,8 @@ class NetIPv6Test extends BaseTest
     /**
      * tests isInNetmask() with the netmask length in
      * the first parameter
+     *
+     * @return void
      */
     public function testIsInNetmaskWithBitsInIP()
     {
@@ -89,46 +100,56 @@ class NetIPv6Test extends BaseTest
 
     /**
      * tests getNetmask with two parameters
+     *
+     * @return void
      */
     public function testGetNetmaskTwoParameters()
     {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getNetmask($testip, 16);
-        $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
+        $this->assertEquals("fe80:0:0:0:0:0:0:0", $is);
     }
 
     /**
      * tests getNetmask with one parameter
+     *
+     * @return void
      */
     public function testGetNetmaskOneParameter()
     {
         $testip = "FE80:0:0:FFFF:129:144:52:38/16";
         $is = $this->ip->getNetmask($testip);
-        $this->assertEquals( "fe80:0:0:0:0:0:0:0", $is);
+        $this->assertEquals("fe80:0:0:0:0:0:0:0", $is);
     }
 
     /**
      * test getAddressType - Link Local
+     *
+     * @return void
      */
     public function testGetAddressTypeLinkLocal()
     {
         $testip = "FE80:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getAddressType($testip);
-        $this->assertEquals( NET_IPV6_LOCAL_LINK, $is);
+        $this->assertEquals(NET_IPV6_LOCAL_LINK, $is);
     }
 
     /**
      * test getAddressType - Unassigned
+     *
+     * @return void
      */
     public function testGetAddressTypeUnassigned()
     {
         $testip = "E000:0:0:FFFF:129:144:52:38";
         $is = $this->ip->getAddressType($testip);
-        $this->assertEquals( NET_IPV6_UNASSIGNED, $is);
+        $this->assertEquals(NET_IPV6_UNASSIGNED, $is);
     }
 
     /**
      * test the Bin2Ip method
+     *
+     * @return void
      */
     public function testBin2Ip()
     {
@@ -141,47 +162,60 @@ class NetIPv6Test extends BaseTest
                   "0000000001010010".
                   "0000000000111000";
         $is = $this->ip->_bin2Ip($testip);
-        $this->assertEquals( "ffff:0:0:ffff:129:144:52:38", $is);
+        $this->assertEquals("ffff:0:0:ffff:129:144:52:38", $is);
     }
 
 
     /**
      * test the IP2Bin method with an uncompressed ip
+     *
+     * @return void
      */
     public function testIp2BinUncompressed()
     {
         $testip = "ffff:0:0:FFFF:129:144:52:38";
         $is = $this->ip->_ip2Bin($testip);
-        $this->assertEquals( "1111111111111111".
-                             "0000000000000000".
-                             "0000000000000000".
-                             "1111111111111111".
-                             "0000000100101001".
-                             "0000000101000100".
-                             "0000000001010010".
-                             "0000000000111000"
-                             ,$is);
+        $this->assertEquals(
+            "1111111111111111".
+            "0000000000000000".
+            "0000000000000000".
+            "1111111111111111".
+            "0000000100101001".
+            "0000000101000100".
+            "0000000001010010".
+            "0000000000111000",
+            $is
+        );
     }
 
 
     /**
      * test the IP2Bin method with a compressed ip
+     *
+     * @return void
      */
     public function testIp2BinCompressed()
     {
         $testip = "ffff::FFFF:129:144:52:38";
         $is = $this->ip->_ip2Bin($testip);
-        $this->assertEquals( "1111111111111111".
-                             "0000000000000000".
-                             "0000000000000000".
-                             "1111111111111111".
-                             "0000000100101001".
-                             "0000000101000100".
-                             "0000000001010010".
-                             "0000000000111000"
-                             ,$is);
+        $this->assertEquals(
+            "1111111111111111".
+            "0000000000000000".
+            "0000000000000000".
+            "1111111111111111".
+            "0000000100101001".
+            "0000000101000100".
+            "0000000001010010".
+            "0000000000111000",
+            $is
+        );
     }
 
+    /**
+     * Provider for {@link self::testCompress}.
+     *
+     * @return array
+     */
     public static function compressProvider()
     {
         return array(
@@ -190,16 +224,20 @@ class NetIPv6Test extends BaseTest
             array("1:0:0:0:0:0:0:0", "1::"),
             array("FF01::0:1", "ff01::1"),
             // with prefix length spec
-            array("0000:0000:0000:0000:0000:ffff:5056:5000/116", "::ffff:5056:5000/116"),
+            array(
+                "0000:0000:0000:0000:0000:ffff:5056:5000/116",
+                "::ffff:5056:5000/116"
+            ),
         );
     }
 
     /**
      * this testcase handles compress
      *
-     * @param string $testip
-     * @param string $expectation
+     * @param string $testip      The IP to compress.
+     * @param string $expectation The expected value.
      *
+     * @return void
      * @dataProvider compressProvider
      */
     public function testCompress($testip, $expectation)
@@ -208,6 +246,11 @@ class NetIPv6Test extends BaseTest
         $this->assertEquals($expectation, $is);
     }
 
+    /**
+     * Provider for {@link self::testUncompress()}.
+     *
+     * @return array
+     */
     public static function uncompressProvider()
     {
         return array(
@@ -221,17 +264,22 @@ class NetIPv6Test extends BaseTest
             array("ff01::101", "ff01:0000:0000:0000:0000:0000:0000:0101", true),
             array("::1", "0000:0000:0000:0000:0000:0000:0000:0001", true),
             array("1::", "0001:0000:0000:0000:0000:0000:0000:0000", true),
-            array("::ffff:5056:5000/116", "0000:0000:0000:0000:0000:ffff:5056:5000/116", true)
+            array(
+                "::ffff:5056:5000/116",
+                "0000:0000:0000:0000:0000:ffff:5056:5000/116",
+                true
+            )
         );
     }
 
     /**
      * this testcase handles uncompress
      *
-     * @param string  $testip
-     * @param string  $expectation
-     * @param boolean $leadingZeros
+     * @param string  $testip       The IP to uncompress.
+     * @param string  $expectation  The expected value.
+     * @param boolean $leadingZeros To use leading zeros or not.
      *
+     * @return void
      * @dataProvider uncompressProvider
      */
     public function testUncompress($testip, $expectation, $leadingZeros)
@@ -242,6 +290,8 @@ class NetIPv6Test extends BaseTest
 
     /**
      * this testcase handles get Prefix length
+     *
+     * @return void
      */
     public function testGetPrefixLength()
     {
@@ -253,6 +303,8 @@ class NetIPv6Test extends BaseTest
 
     /**
      * this testcase handles remove a Prefix length
+     *
+     * @return void
      */
     public function testRemovePrefixLength()
     {
@@ -263,6 +315,11 @@ class NetIPv6Test extends BaseTest
         $this->assertEquals("0000:0000:0000:0000:0000:ffff:5056:5000", $ip);
     }
 
+    /**
+     * Parse address.
+     *
+     * @return void
+     */
     public function testParseAddress()
     {
         $testip = "2001:502:f3ff::/48";
@@ -270,7 +327,10 @@ class NetIPv6Test extends BaseTest
         $result = $this->ip->parseAddress($testip);
 
         $this->assertEquals("2001:502:f3ff:0:0:0:0:0", $result['start']);
-        $this->assertEquals("2001:502:f3ff:ffff:ffff:ffff:ffff:ffff", $result['end']);
+        $this->assertEquals(
+            "2001:502:f3ff:ffff:ffff:ffff:ffff:ffff",
+            $result['end']
+        );
 
     }
 
