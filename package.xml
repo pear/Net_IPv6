@@ -161,6 +161,7 @@ Thanks to elfrink at introweb dot nl
     <api>beta</api>
    </stability>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <date>2008-10-27</date>
    <notes>
 Because this release adds a new method and some bug tickets are still open, the package
 release is named as Beta, instead of releasing a 5th RC version.
@@ -238,6 +239,7 @@ without a netmask
     <api>beta</api>
    </stability>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <date>2007-11-21</date>
    <notes>
 Fix Bug #12442, thanks to pear at erikdebruijn dot nl
    + add getNetmaskSpec()
@@ -253,6 +255,7 @@ Fix Bug #12442, thanks to pear at erikdebruijn dot nl
     <api>beta</api>
    </stability>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <date>2008-09-16</date>
    <notes>
 take care of prefix length specification in an address, thanks to Jens Ott
    </notes>
