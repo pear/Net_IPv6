@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_IPv6</name>
  <channel>pear.php.net</channel>
  <summary>Check and validate IPv6 addresses</summary>
@@ -15,8 +15,8 @@
   <email>alexander.merz@web.de</email>
   <active>yes</active>
  </lead>
- <date>2012-03-23</date>
- <time>01:22:00</time>
+ <date>2014-03-22</date>
+ <time>18:56:55</time>
  <version>
   <release>1.2.2b2</release>
   <api>1.2.2</api>
@@ -31,9 +31,13 @@
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="e27f6754251faa2ab95eadc8da185845" name="Net/IPv6.php" role="php" />
-   <file baseinstalldir="Net" md5sum="62bf24bd1e9d4dc0cfbd25b433026e71" name="tests/AllTests.php" role="test" />
-   <file baseinstalldir="Net" md5sum="8d48342474dfa8be7859300e7b3df212" name="tests/NetIPv6Test.php" role="test" />
+   <file baseinstalldir="/" md5sum="0096c05bc0c7ea27f6d5b657705244d0" name="Net/IPv6.php" role="php" />
+   <file baseinstalldir="/" md5sum="654a8d6ed187bdf5e0964ae8d4737318" name="tests/TestInit.php" role="test" />
+   <file baseinstalldir="/" md5sum="f56d958b1971d02c464f24ae778ff6a3" name="tests/Net/Ipv6/Test/BaseTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="2d6d5316cd1d9da6c5e74204fe45e455" name="tests/Net/Ipv6/Test/BugsTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="9c30f47bba1e391d260705a01a97648a" name="tests/Net/Ipv6/Test/Test.php" role="test" />
+   <file baseinstalldir="/" md5sum="29b60e74686cdb55c1de787541c4cad4" name="composer.json" role="data" />
+   <file baseinstalldir="/" md5sum="60713d62bc926aed48c71be16747b527" name="phpunit.xml" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -48,193 +52,6 @@
  </dependencies>
  <phprelease />
  <changelog>
-  <release>
-   <date>2011-11-15</date>
-   <time>01:50:00</time>
-   <version>
-    <release>1.2.2b</release>
-    <api>1.2.2</api>
-   </version>
-  <stability>
-   <release>beta</release>
-   <api>alpha</api>
-  </stability>
-  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-  <notes>
-#18687 Add recommendedFormat() provided by Tetsuji Koyama to respect RFC5952 about shortening of 0-Byte segments.
-The method may become a part of compress() in a stable release.
-#18976 Rok Potocnik spotted a missing range check for the netmask value while checking an IPv6 address.
-  </notes>
-  </release>
-  <release>
-   <date>2011-02-07</date>
-   <time>22:45:00</time>
-   <version>
-    <release>1.2.1</release>
-    <api>1.2.0</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-No Changes. Go to stable.
-   </notes>
-  </release>
-  <release>
-   <date>2010-12-30</date>
-   <time>05:30:00</time>
-   <version>
-    <release>1.2.1RC1</release>
-    <api>1.2.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-Go to Release Candidate.
-Updated Peardoc to reflect the API changes.
-   </notes>
-  </release>
-  <release>
-   <date>2010-12-22</date>
-   <time>02:10:00</time>
-   <version>
-    <release>1.2.1b1</release>
-    <api>1.2.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>alpha</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-Feature request:
-+ add parameter to uncompress() to add leading zeros to an address (Pascal Uhlmann)
-   </notes>
-  </release>
-  <release>
-   <date>2010-11-25</date>
-   <time>14:30:00</time>
-   <version>
-    <release>1.2.1b</release>
-    <api>1.2.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>alpha</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-#18085 Fix wrong file path
-   </notes>
-  </release>
-  <release>
-   <date>2010-11-18</date>
-   <time>03:40:00</time>
-   <version>
-    <release>1.2.0b</release>
-    <api>1.2.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>alpha</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-+ New method isCompressible()
-+ New method separate()
-+ compress() got a second parameter to enforce compression
-+ add new address types
-- deprecated getPrefixLength() (technical identical to getNetmaskSpec)
-- deprecated removePrefixLength() (technical identical to removeNetmaskSpec)
-   </notes>
-  </release>
-  <release>
-   <date>2010-11-08</date>
-   <time>19:15:00</time>
-   <version>
-    <release>1.1.0</release>
-    <api>1.1.0</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-Jump from beta to stable. 
-Fixed:
-#17819 documentation needs to be updated
-   </notes>
-  </release>
-  <release>
-   <version>
-  	<release>1.1.0b2</release>
-  	<api>1.1.0b1</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-    <notes>
-Fixed:
-#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
-#15947  checkIPv6 returned true although the IP was too long
-#16220  using the wrong variable in _bin2Ip
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.0b1</release>
-    <api>1.1.0b1</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-Because this release adds a new method and some bug tickets are still open, the package
-release is named as Beta, instead of releasing a 5th RC version.
-
-#14728   add parseAddress(), thanks to Nicholas Williams!
-#14767   most CS issues should be solved
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.0RC3</release>
-    <api>1.1.0RC3</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-Fix Bug #12442, thanks to pear at erikdebruijn dot nl
-   + add getNetmaskSpec()
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.0RC4</release>
-    <api>1.1.0RC4</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-   <notes>
-take care of prefix length specification in an address, thanks to Jens Ott
-   </notes>
-  </release>
   <release>
    <version>
     <release>1.0</release>
@@ -336,6 +153,42 @@ Thanks to elfrink at introweb dot nl
   </release>
   <release>
    <version>
+    <release>1.1.0b1</release>
+    <api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Because this release adds a new method and some bug tickets are still open, the package
+release is named as Beta, instead of releasing a 5th RC version.
+
+#14728   add parseAddress(), thanks to Nicholas Williams!
+#14767   most CS issues should be solved
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0b2</release>
+    <api>1.1.0b1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-02-12</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Fixed:
+#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
+#15947  checkIPv6 returned true although the IP was too long
+#16220  using the wrong variable in _bin2Ip
+   </notes>
+  </release>
+  <release>
+   <version>
     <release>1.1.0RC1</release>
     <api>1.1.0RC1</api>
    </version>
@@ -377,20 +230,169 @@ without a netmask
   </release>
   <release>
    <version>
-    <release>1.1.0b2</release>
-    <api>1.1.0b1</api>
+    <release>1.1.0RC3</release>
+    <api>1.1.0RC3</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2010-02-12</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
    <notes>
+Fix Bug #12442, thanks to pear at erikdebruijn dot nl
+   + add getNetmaskSpec()
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0RC4</release>
+    <api>1.1.0RC4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+take care of prefix length specification in an address, thanks to Jens Ott
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-08</date>
+   <time>19:15:00</time>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Jump from beta to stable. 
 Fixed:
-#14747  Compressing an already compressed IP returns the IP &quot;as is&quot; now
-#15947  checkIPv6 returned true although the IP was too long
-#16220  using the wrong variable in _bin2Ip
+#17819 documentation needs to be updated
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-18</date>
+   <time>03:40:00</time>
+   <version>
+    <release>1.2.0b</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
++ New method isCompressible()
++ New method separate()
++ compress() got a second parameter to enforce compression
++ add new address types
+- deprecated getPrefixLength() (technical identical to getNetmaskSpec)
+- deprecated removePrefixLength() (technical identical to removeNetmaskSpec)
+   </notes>
+  </release>
+  <release>
+   <date>2010-11-25</date>
+   <time>14:30:00</time>
+   <version>
+    <release>1.2.1b</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+#18085 Fix wrong file path
+   </notes>
+  </release>
+  <release>
+   <date>2010-12-22</date>
+   <time>02:10:00</time>
+   <version>
+    <release>1.2.1b1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Feature request:
++ add parameter to uncompress() to add leading zeros to an address (Pascal Uhlmann)
+   </notes>
+  </release>
+  <release>
+   <date>2010-12-30</date>
+   <time>05:30:00</time>
+   <version>
+    <release>1.2.1RC1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+Go to Release Candidate.
+Updated Peardoc to reflect the API changes.
+   </notes>
+  </release>
+  <release>
+   <date>2011-02-07</date>
+   <time>22:45:00</time>
+   <version>
+    <release>1.2.1</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+No Changes. Go to stable.
+   </notes>
+  </release>
+  <release>
+   <date>2011-11-15</date>
+   <time>01:50:00</time>
+   <version>
+    <release>1.2.2b</release>
+    <api>1.2.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+#18687 Add recommendedFormat() provided by Tetsuji Koyama to respect RFC5952 about shortening of 0-Byte segments.
+The method may become a part of compress() in a stable release.
+#18976 Rok Potocnik spotted a missing range check for the netmask value while checking an IPv6 address.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.2b2</release>
+    <api>1.2.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>alpha</api>
+   </stability>
+   <date>2014-03-22</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+   <notes>
+#19334 CheckIPv6 accepted invalid characters
    </notes>
   </release>
  </changelog>
