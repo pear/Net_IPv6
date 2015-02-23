@@ -1,7 +1,6 @@
 <?php
 
 require_once "Net/IPv6.php";
-require_once "PHPUnit/Framework/TestCase.php";
 
 abstract class Net_Ipv6_Test_BaseTest extends PHPUnit_Framework_TestCase
 {
