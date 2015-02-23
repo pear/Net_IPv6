@@ -188,4 +188,20 @@ class Net_Ipv6_Test_BugsTest extends Net_Ipv6_Test_BaseTest
     {
         $this->assertFalse($this->ip->checkIPv6("2345::1/-1"));
     }
+
+    /**
+     * Test covers bugfix in pear/Net_IPv6#10.
+     *
+     * @return void
+     * @link https://github.com/pear/Net_IPv6/pull/10
+     */
+    public function testPR10_compressAllZeros()
+    {
+        $testip = "0:0:0:0:0:0:0:0";
+        $is = $this->ip->compress($testip);
+        $this->assertEquals("::", $is);
+        $testip = "::";
+        $is = $this->ip->compress($testip);
+        $this->assertEquals("::", $is);
+    }
 }
