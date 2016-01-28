@@ -10,6 +10,19 @@ abstract class Net_Ipv6_Test_BaseTest extends PHPUnit_Framework_TestCase
     protected $ip;
 
     /**
+     * Call to protected functions
+     *
+     * @return object
+     */
+    protected static function getMethod($name)
+    {
+        $class = new ReflectionClass('Net_IPv6');
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
+    }
+
+    /**
      * Setup object.
      *
      * @return void

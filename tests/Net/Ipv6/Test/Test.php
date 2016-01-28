@@ -161,8 +161,9 @@ class Net_IPv6_Test_Test extends Net_Ipv6_Test_BaseTest
                   "0000000101000100".
                   "0000000001010010".
                   "0000000000111000";
-        $is = $this->ip->_bin2Ip($testip);
-        $this->assertEquals("ffff:0:0:ffff:129:144:52:38", $is);
+        $_bin2Ip = self::getMethod("_bin2Ip");
+        $is = $_bin2Ip->invoke(null, $testip);
+        $this->assertEquals( "ffff:0:0:ffff:129:144:52:38", $is);
     }
 
 
@@ -174,18 +175,17 @@ class Net_IPv6_Test_Test extends Net_Ipv6_Test_BaseTest
     public function testIp2BinUncompressed()
     {
         $testip = "ffff:0:0:FFFF:129:144:52:38";
-        $is = $this->ip->_ip2Bin($testip);
-        $this->assertEquals(
-            "1111111111111111".
-            "0000000000000000".
-            "0000000000000000".
-            "1111111111111111".
-            "0000000100101001".
-            "0000000101000100".
-            "0000000001010010".
-            "0000000000111000",
-            $is
-        );
+        $_ip2Bin = self::getMethod("_ip2Bin");
+        $is = $_ip2Bin->invoke(null, $testip);
+        $this->assertEquals( "1111111111111111".
+                             "0000000000000000".
+                             "0000000000000000".
+                             "1111111111111111".
+                             "0000000100101001".
+                             "0000000101000100".
+                             "0000000001010010".
+                             "0000000000111000"
+                             ,$is);
     }
 
 
@@ -197,18 +197,17 @@ class Net_IPv6_Test_Test extends Net_Ipv6_Test_BaseTest
     public function testIp2BinCompressed()
     {
         $testip = "ffff::FFFF:129:144:52:38";
-        $is = $this->ip->_ip2Bin($testip);
-        $this->assertEquals(
-            "1111111111111111".
-            "0000000000000000".
-            "0000000000000000".
-            "1111111111111111".
-            "0000000100101001".
-            "0000000101000100".
-            "0000000001010010".
-            "0000000000111000",
-            $is
-        );
+        $_ip2Bin = self::getMethod("_ip2Bin");
+        $is = $_ip2Bin->invoke(null, $testip);
+        $this->assertEquals( "1111111111111111".
+                             "0000000000000000".
+                             "0000000000000000".
+                             "1111111111111111".
+                             "0000000100101001".
+                             "0000000101000100".
+                             "0000000001010010".
+                             "0000000000111000"
+                             ,$is);
     }
 
     /**
