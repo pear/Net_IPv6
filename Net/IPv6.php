@@ -843,7 +843,7 @@ class Net_IPv6
         if (strstr($ip, '.')) {
 
             $pos      = strrpos($ip, ':');
-            $ip{$pos} = '_';
+            $ip[$pos] = '_';
             $ipPart   = explode('_', $ip);
 
             return $ipPart;
